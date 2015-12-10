@@ -36,9 +36,6 @@
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$data = curl_exec($ch);
 		curl_close($ch);
-		// if(curl_errno($ch)) {
-		//     echo 'error:' . curl_error($ch);
-		// }
 		return $data;
 	}
 
@@ -108,8 +105,7 @@
 			return $all_people;
 	}
 
-	// recursively get all pages.
-	// 
+	// Get all pages of peoples
 	function get_all_people( $address, $single_page = false ){
 
 		$pages = array();
@@ -153,32 +149,32 @@
 <head>
 	<title>Phone Territory Easyfier</title>
 	<style>
-	body {
-		font-family: sans-serif;
-	}
-	input[type='submit']{
-		padding: 5px;
-		font-size: 1.5em;
-	}
-	input[type='text']{
-		width: 300px;
-		padding: 5px;
-		font-size: 1.5em;
-		border-radius: 3px;
-		border: 1px solid #999;
-	}
-	input.small {
-		width: 100px;
-	}
-	input.large {
-		width: 600px;
-	}
-	.people {
-		width: 100%;
-	}
-	.people th {
-		background: #fefddf;
-	}
+		body {
+			font-family: sans-serif;
+		}
+		input[type='submit']{
+			padding: 5px;
+			font-size: 1.5em;
+		}
+		input[type='text']{
+			width: 300px;
+			padding: 5px;
+			font-size: 1.5em;
+			border-radius: 3px;
+			border: 1px solid #999;
+		}
+		input.small {
+			width: 100px;
+		}
+		input.large {
+			width: 600px;
+		}
+		.people {
+			width: 100%;
+		}
+		.people th {
+			background: #fefddf;
+		}
 	</style>
 </head>
 <body>
@@ -234,13 +230,13 @@
 					<td><?= $person['post_code']; ?></td>
 				</tr>
 			<?php 
-				} 
-			}
+				} // people loop
+			} // pages loop
 			?>
 			</tbody>
 		</table>
 	<?php
-	endif;
+	endif; // if an address was entered
 
 ?>
  </body>
