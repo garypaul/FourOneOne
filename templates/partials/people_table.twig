@@ -1,0 +1,32 @@
+<table class="people">
+	<thead>
+		<tr>
+			<th class='name'>Name</th>			
+			<th class='unit'>Unit</th>
+			<th class='postcode'>Post Code</th>
+			<th class='phone'>Phone</th>
+			{% if printview %}
+			<th class='actions'>Status</th>
+			<th class="notes">Notes</th>
+			{% endif %}
+		</tr>
+	</thead>
+	<tbody>
+	{% for p in people %}
+		<tr>
+			<td class="name">{{ p.name }}</td>
+			<td class="unit">{{ p.unit }}</td>
+			<td class="postcode">{{ p.postcode }}</td>
+			<td class="phone">{{ p.number }}</td>
+			{% if printview %}
+			<td class='actions'></td>
+			<td class="notes"></td>
+			{% endif %}
+		</tr>
+	{% else %}
+		<tr>
+			<td colspan='7'><p>No People listed in building</p></td>	
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>

@@ -1,0 +1,18 @@
+{
+    "name": "armstrongest/fouroneone",
+    "description": "An app that takes names from 411.ca and puts them into a database",
+    "require": {
+        "linclark/microdata-php": "2.0.*",
+        "monolog/monolog": "^1.17",
+        "slim/slim": "^3.0",
+        "slim/twig-view": "^2.0",
+        "slim/php-view": "^2.0",
+        "slim/flash": "^0.1.0"
+    },
+    "authors": [
+        {
+            "name": "Gary Armstrong",
+            "email": "garypaul@gmail.com"
+        }
+    ]
+}

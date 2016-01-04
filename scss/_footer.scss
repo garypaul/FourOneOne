@@ -1,0 +1,30 @@
+
+footer {
+	padding: 0 0 100px 50px;
+	width: 50%;
+}
+
+footer p {
+	color: #999;
+	float: left;
+	padding: 0;
+}
+
+footer nav {
+	float: right;
+}
+
+footer nav a {
+	float: left;
+	padding: 15px 0;
+	margin-left: 40px;
+	opacity: .7;
+}
+
+footer a {
+	color: $teal;
+}
+
+footer strong a:hover {
+	text-decoration: underline;
+}

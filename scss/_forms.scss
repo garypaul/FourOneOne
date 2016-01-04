@@ -1,0 +1,70 @@
+fieldset {
+	border: none;
+	padding: 0;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+	font-family: 'Roboto', sans-serif;
+	background-color: #eee;
+	width: 100%;
+	border: none;
+	padding: 13px;
+	border: 2px solid #eee;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	font-size: 16px;
+	outline: none;
+	transition: border-color .2s;
+}
+
+
+input:focus,
+textarea:focus,
+input.fail:focus,
+textarea.fail:focus {
+	border-color: $teal;
+}
+input.inline {
+	width: inherit;
+	display: inline-block;
+}
+input.fail,
+textarea.fail {
+	border-color: $red;
+}
+
+textarea {
+	min-height: 200px;
+}
+
+td, th {
+	input[type='submit'] { margin-top : -10px; }
+}
+input[type="submit"],
+.button {
+	font-family: 'Roboto', sans-serif;
+	background: $teal;
+	/*width: 100%;*/
+	border-radius: 5px;
+	color: #fff;
+	font-weight: bold;
+	border: none;
+	cursor: pointer;
+	padding: 15px 15px 13px;
+	font-size: 16px;
+	display: inline-block;
+	border-bottom: 2px solid $dark-teal;
+	outline: none;
+	transition: background-color .2s, transform .2s;
+}
+
+
+.button:hover {
+	background-color: $dark-teal;
+}
+
+.button:active {
+	transform: translateY(2px);
+}

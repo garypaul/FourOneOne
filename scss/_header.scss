@@ -1,0 +1,44 @@
+header {
+	background: $indigo;
+	padding: 0px 50px;
+	color: #fff;
+	height: 80px;
+	overflow: hidden;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	z-index: 1;
+}
+
+h1 {
+	margin: 0 30px 0 0;
+	padding: 0;
+	font-size: 18px;
+	float: left;
+	line-height: 80px;
+}
+
+header nav {
+	font-size: 16px;
+}
+
+header nav a {
+	margin: 0px 20px;
+	color: #fff;
+	padding: 0 10px;
+	opacity: .7;
+	line-height: 80px;
+	height: 80px;
+	display: inline-block;
+}
+
+nav a:hover {
+	opacity: 1;
+	text-decoration: none;
+	border-bottom: 6px solid #2d3339;
+}
+
+nav .selected {
+	opacity: 1;
+	border-bottom: 6px solid $teal;
+}

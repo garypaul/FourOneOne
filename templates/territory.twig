@@ -1,0 +1,38 @@
+{% extends 'main.twig' %}
+
+{% block title %}Territory: {{ territory.title }}{% endblock title%}
+
+{% block content %}
+	<strong><a href="{{ path_for( 'territories' ) }}">« All Territories</a></strong>
+	{% if territory %}
+		<h2>Territory: {{ territory.title|e }} </h2>
+		<strong>Add Building</strong>
+		<form action="" method="POST">
+			<label for='address'>Street Address:</label>
+
+			<input type='text' class="inline" name="address" autofocus placeholder="2414 Matityahu Ave">		
+			<input type='submit' name='form_add_building' value="Add building">
+
+			<input type='hidden' name="city" value="Vancouver">
+			<input type='hidden' name="province" value='BC'>
+			<input type='hidden' name="territory_id" value='{{ territory.id }}'/>
+
+		</form>
+		<strong>Buildings</strong>
+		<ul class="box-list">
+			{% for b in buildings %}
+				<li>
+					<a href="{{ path_for('building', {'id': b.id}) }}">{{ b.address|e }}</a>
+				</li>
+			{% else %}
+				<li><p>No buildings found.</p></li>
+			{% endfor %}
+		</ul>
+
+		<strong><a href="{{ path_for('territory_details', { id : territory.id }) }}">Print {{ territory.title }} details</a></strong>
+
+	{% else %}
+		<p>Sorry, territory not found. View <a href="{{ path_for( 'territories' ) }}">all Territories</a></p>
+	{% endif %}
+<em>( territory last updated: {{ territory.last_updated|e }} )</em>
+{% endblock content %}

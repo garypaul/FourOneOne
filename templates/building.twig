@@ -1,0 +1,114 @@
+{% extends 'main.twig' %}
+
+{% block title %}Building: {{ building.address }}{% endblock title%}
+
+{% block content %}
+	{% if building %}
+
+		<strong>
+			<a href="{{ path_for( 'territory', {'id': building.territory_id} ) }}">« Back to Territory {{ territory_title }}</a>
+		</strong>
+		<h2>{{ building.address }}</h2>
+		<h3>People</h3>	
+		{% if new_people %}
+			{# Yay! New peoples. Let's put them into a form #}
+			<form method='post' class="add_people" action="" id='add_people'>
+				<table class="people">
+					<legend>Add People</legend>
+					<thead>
+						<tr>
+							<th class='name'>Name</th>
+							<th class='address'>Address</th>
+							<th class='unit'>Unit</th>
+							<th class='postcode'>Post Code</th>
+							<th class='phone'>Phone</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for p in new_people %}
+							<tr>
+								<td class="name"><input type='text' name='people[{{ loop.index }}][name]' value='{{ p.name }}'></td>
+								<td class="address"><input type='text' name='people[{{ loop.index }}][address]' value='{{ p.address }}' ></td>
+								<td class="unit"><input type='text' name='people[{{ loop.index }}][unit]' value=''></td>
+								<td class="postcode"><input type='text' name='people[{{ loop.index }}][postcode]' value='{{ p.postcode }}' ></td>
+								<td class="phone"><input type='text' name='people[{{ loop.index }}][number]' value='{{ p.number }}'></td>
+								<td><input type='checkbox' checked class='js_exclude' ></td>
+							</tr>
+						{% endfor %}				
+					</tbody>
+				</table>
+				<input type='submit' name='form_add_people' value='Add people' >
+			</form>
+		{% else  %}
+			
+			{# Show form to get new people #}
+			<strong>Get people from 411.ca</strong>
+			<form action="" class="form_get_people_by_address" method="POST">
+				{# <label for='address'>Address: </label> #}
+				<input name='address' class='inline' type='text' value='{{ building.address }}'>
+				<input type='submit' name='form_get_people_by_address' value='Find People with 411' /> 
+			</form>
+
+		{% endif %}
+		
+		{% if people %}
+			{% include 'partials/people_table.twig' %}
+
+			<strong>Add person</strong>
+			{% include 'partials/form_add_person.twig' %}
+		{% endif %}
+	
+	{% else %}
+		<strong><a href="{{ path_for('territories') }}">« All Territories</a></strong>
+		<p>Sorry, building not found.</p>
+	{% endif %}
+
+{% endblock content %}
+{% block scripts %}
+	<script>
+	function processEachNode ( nodeList, action ){
+		for( var i = 0, node; node = nodeList[i]; i++ ){
+			action(node);
+		}
+	}
+
+	function toggleEditMode( row, isChecked, selector ){
+		selector = selector || 'input[type="text"]';
+		var els = row.querySelectorAll(selector);
+
+		for( var i = 0, el; el = els[i]; i++ ){
+			el.disabled = !isChecked;
+		}
+		if(isChecked)
+			row.classList.remove("disabled");
+		else
+			row.classList.add('disabled');
+	}
+	function findParentElement(curNode, findEl){
+		findEl = findEl.toUpperCase() || 'HTML';
+		if (curNode == null) return null;
+
+		if ( curNode.parentElement && curNode.parentElement.nodeName == findEl )
+			return curNode.parentElement;
+		else
+			return findParentElement( curNode.parentElement, findEl );
+	}
+
+	//var form = document.querySelector('#add_people');
+	var checkboxes = document.querySelectorAll('input.js_exclude')
+
+	document.addEventListener('DOMContentLoaded', function() {
+		processEachNode( checkboxes, function(chk){
+			chk.addEventListener('click', function(e){
+				toggleEditMode( findParentElement( chk, 'TR'), chk.checked )
+			});
+		});
+	});
+
+	processEachNode( checkboxes, function(chk){
+		toggleEditMode( findParentElement( chk, 'TR'), chk.checked )
+	});
+
+</script>
+{% endblock scripts %}

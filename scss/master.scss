@@ -1,0 +1,18 @@
+@media screen {
+	
+	@import 'variables';
+	@import 'base';
+	@import 'header';
+	@import 'forms';
+	@import 'forms';
+	@import 'modules';
+	@import 'animation';
+	@import 'footer';
+
+	@import 'queries';
+
+}
+@media print {
+	@import 'variables';
+	@import 'print';
+}

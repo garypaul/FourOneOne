@@ -1,0 +1,17 @@
+{% if messages %}
+	{% for key, msg in messages %}
+	<div id="feedback" class="{{ key }}">
+		<a class='dismiss'>Close</a>
+		<h3>
+			{% if key == 'fail' %}
+				Oops!
+			{% elseif key == 'success' %}
+				Success!
+			{% endif %}
+		</h3>
+		{% for m in msg %}
+			<p>{{ m }}</p>
+		{% endfor %}
+	</div>
+	{% endfor %}
+{% endif %}

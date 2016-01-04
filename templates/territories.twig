@@ -1,0 +1,30 @@
+{% extends 'main.twig' %}
+
+{% block title %}Territories{% endblock title %}
+
+{% block content %}
+
+	<strong>Clark</strong>
+	<h2>Phone Territories</h2>
+
+	<strong>Add territory:</strong>
+	<form action="" method="POST">
+		{# <label for='title'>Territory: </label> #}
+		<input type='text' class='inline' autofocus name="title" placeholder="1A">
+		<input type='submit'name='form_add_territory' value="Add Territory">
+	</form>
+	<strong>All territories:</strong>
+	<ul class='box-list'>
+	{% for t in territories %}
+		
+		{% if t.id == added_id %}
+			{% set class = 'added' %}
+		{% endif %}
+		<li class = '{{ class }}'><a href="{{ path_for('territory', {'id': t.id}) }}">{{ t.title }}</a></li>
+	{% else %}
+		<li><p>No territories were found. Add one!</p></li>
+	{% endfor %}
+	</ul>
+
+
+{% endblock content %}

@@ -1,0 +1,124 @@
+
+.box-list {
+	list-style: none;
+	display: flex;
+	flex-flow : row wrap;
+	justify-content: flex-start;
+	padding: 0;
+	margin: 0;
+	
+	li {
+		padding: 0;
+		border-radius: 5px;
+		border: 2px solid $dark-teal;
+		margin: .5em .5em .5em 0;
+		min-width: 100px;
+		text-align: center;
+		&:hover, &:active, &:focus  {
+			background: $teal;
+			a { color: #eee; }
+		}
+
+		a {
+			padding: .5em;
+			display: block;
+			font-size: 2em;
+		}
+	}
+}
+
+
+.people {
+	td {
+		border: 1px solid #eee;
+	}
+	th, td {		
+		padding: 5px 8px;
+	}
+	.unit, .postcode, .phone {
+		text-align: center;
+	}
+	.name, .address {
+		min-width: 130px;
+	}
+	.unit {
+		width: 80px;
+	}
+	.postcode {
+		width: 110px;
+		white-space: nowrap;
+	}
+	.phone {
+		width: 150px;
+		white-space: nowrap;
+	}
+	.notes {
+		width: 200px;
+		text-align: center;
+	}
+	input[type='text']{
+		opacity: 1;
+		transition: all .8s ease;
+	}
+}
+
+.disabled * {
+	transition: all .5s ease;
+}
+.disabled input[type='text']{
+	opacity: .25;
+	text-decoration: line-through;
+}
+
+
+
+#feedback {
+	padding: 0px 50px 0;
+	color: #fff;
+	height: 80px;
+	overflow: hidden;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	z-index: 2;
+	transform: translateY(-100px);
+
+	&.success {
+		transform: translateY(-100px);
+		background: $teal;
+		-webkit-animation: feedback-in .3s ease-in-out forwards, feedback-out .3s ease-in-out 5s forwards;
+		-moz-animation:    feedback-in .3s ease-in-out forwards, feedback-out .3s ease-in-out 5s forwards;
+		animation:         feedback-in .3s ease-in-out forwards, feedback-out .3s ease-in-out 5s forwards;
+	}
+	&.fail {
+		transform: translateY(-100px);
+		background: $red;
+		-webkit-animation: feedback-in .3s ease-in-out forwards;
+		-moz-animation:    feedback-in .3s ease-in-out forwards;
+		animation:         feedback-in .3s ease-in-out forwards;
+	}
+	&.dismissed {
+		transform: translateY(0);
+		-webkit-animation: feedback-out .3s ease-in-out forwards;
+		-moz-animation:    feedback-out .3s ease-in-out forwards;
+		animation:         feedback-out .3s ease-in-out forwards;
+	}
+	h3 {
+		margin: 18px 0 3px;
+	}
+	p {
+		margin: 0;
+		font-size: 14px;
+		opacity: .7;
+	}
+}
+.dismiss {
+	float: right;
+	padding: 30px 0;
+	opacity: .7;
+	cursor: pointer;
+	&:hover {
+		opacity: 1;
+		text-decoration: none;
+	}
+}

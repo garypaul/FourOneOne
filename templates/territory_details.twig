@@ -1,0 +1,23 @@
+{% extends 'main.twig' %}
+
+{% block title %}Territory: {{ territory.title }} Details{% endblock title%}
+
+
+{% block content %}
+	
+	<h2>
+		<a href="{{ path_for( 'territory', {'id': territory.id} ) }}">Territory: {{ territory.title }}</a>
+	</h2>
+	{% for b in territory.ownBuilding %}
+		<article class="building">
+		<h2>Address: {{ b.address }}</h2>
+			{% set people = b.ownPerson %}
+			{% set printview = true %}
+			{% include 'partials/people_table.twig' %}
+		</article>
+	{% else %}
+		<strong><a href="{{ path_for( 'territory', {'id': building.territory_id} ) }}">« Back to Territory {{ territory.title }}</a></strong>
+		<p>Sorry, no buildings in territory.</p>
+	{% endfor %}
+
+{% endblock content %}

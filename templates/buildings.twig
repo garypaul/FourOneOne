@@ -1,0 +1,29 @@
+{% extends 'main.twig' %}
+
+{% block title %}Buildings in Clark{% endblock title%}
+
+{% block content %}
+
+	<strong>Clark</strong>
+	<h2>All Buildings in Territory</h2>
+
+	<ul>
+	{% for b in buildings %}
+		
+		{% if b.id == added_id %}
+			{% set class = 'added' %}
+		{% endif %}
+		<li class = '{{ class }}'><a href="{{ path_for('building', {'id': b.id}) }}">{{ b.address }}</a></li>
+	{% else %}
+		<p>No buildings were found.</p>
+	{% endfor %}
+	</ul>
+
+{# 	<h3>Add new territory:</h3>
+	<form action="" method="POST">
+		<label for='title'>Territory Name</label>
+		<input type='text' name="title" placeholder="A1">
+		<input type='submit'name='form_add_territory' value="Add Territory">
+	</form>
+ #}
+{% endblock content %}

@@ -1,0 +1,26 @@
+<form action='' class="form_add_person" method='POST'>
+	<table>
+		<thead>
+			<thead>
+			<tr>
+				<th class='name'>Name</th>
+				<th class='address'>Address</th>
+				<th class='unit'>Unit</th>
+				<th class='postcode'>Post Code</th>
+				<th class='phone'>Phone</th>
+				<th></th>
+			</tr>
+		</thead>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="name"><input type='text' placeholder='John Smith' name='person[name]'></td>
+				<td class="address"><input type='text' placeholder='123 Sesame St.' name='person[address]' value="{{ building.address }}" ></td>
+				<td class="unit"><input type='text' placeholder='101' name='person[unit]' ></td>
+				<td class="postcode"><input type='text' placeholder='V5V 5V5' name='person[postcode]'></td>
+				<td class="phone"><input type='text' placeholder='###-###-####' name='person[number]' ></td>
+				<td><input name="form_add_person" type='submit' value='Add'></td>
+			</tr>
+		</tbody>
+	</table>	
+</form>	
