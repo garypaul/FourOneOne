@@ -4,8 +4,8 @@
 <head>
   {% block head %}
     <meta charset="utf-8">
-    <title>{% block title %}CTT{% endblock title %}</title>
-    <meta name="description" content="Clark Territory Manager">
+    <title>{% block title %}FourOneOne DB{% endblock title %} | {% block congregation %}Clark{% endblock %}</title>
+    <meta name="description" content="FourOneOne">
     <meta name="author" content="Gary Armstrong">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/css/master.css">
@@ -20,7 +20,7 @@
 
 
   <header>
-    <h1>Clark Territories</h1>
+    <h1>FourOneOne DB</h1>
     <nav>
       <a href="{{ base_url() }}" class="selected">Home</a>
       <a href="{{ path_for('territories') }}">Territories</a>
@@ -39,11 +39,16 @@
   </main>
 
   <footer>
+    <hr>
+
     {% block footer %}
       <p>A project by <strong><a href="http://armstrongest.com">Gary Armstrong</a></strong></p>
       <nav>
+        {% block actions %}
+        {% endblock actions %}
         <a href="{{ base_url() }}" class="selected">Home</a>
         <a href="{{ path_for('territories') }}">Territories</a>
+
       </nav>
     {% endblock footer %}
   </footer>

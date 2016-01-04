@@ -1,11 +1,46 @@
 {% extends 'main.twig' %}
 
-{% block title %}About Phone Territory Manager{% endblock %}
+{% block title %}About FourOneOne DB{% endblock %}
 
 {% block content %}
     <strong>About</strong>
-    <h2>Phone Territory Manager</h2>
+    <h2>FourOneOne DB</h2>
 
-    <p>Expect Riveting documentation here</p>
+    <p><strong>F</strong>our<strong>O</strong>ne<strong>O</strong>ne <strong>D</strong>B is a small utility website to make managing congregation phone territories a little easier ( and maybe even a little fun ).</p>
+
+
+    <h3>Adding a territory</h3>
+    <p>Start with the <a href="{{ path_for('territories') }}">territories</a> page. You will be able to add a new territory or see all the existing territories. You can give it a consistent name, a number, or memorable name. You could call it <em>1A</em>, <em>1</em>, or <em>Armstrong Towers</em>. Press 'Add Territory' and that's it. It's saved and you're taken to the territory page.</p>
+
+    <h3>Adding Buildings</h3>
+    <p>A territory can consist of multiple buildings ( each with its own address ). Once you're on the territory page simply enter a street address into the box and hit add building. There is no need to include the city, province, or postal code. Just the street address, like <address>123 Pacific Blvd.</address> This address also serves as the name of the building. Hit Add Building to save to the database
+
+    <h3>Getting People</h3>
+    <p>Here comes the fun part! Usually, to maintain telephone territories is a laborious job. You have to look perform a reverse address lookup on a website, copy each name, number, address, postal code, etc. manually and enter them into either spreadsheet or other data store. Wouldn't it be nice to press a button and have a computer do all that copy paste work for you?</p>
+    <p><strong>F</strong>our<strong>O</strong>ne<strong>O</strong>ne <strong>D</strong>B allows you to do just that! Once you're have the building page loaded, check that the street address looks good and press 'Find People with 411' and it will use that address to request data from 411.ca and return all those people.</p>
+    <p class='important'>
+    	Pressing the 'Find People with 411' button does <strong>NOT</strong> add the people to the database. It only shows the list of people in the building. This is so you can go over each entry and make modifications before you save the list.
+    </p>
+    <p>
+    	If you get a success message, that's great! You're ready to add people!  Sometimes, however, you will get a 'fail' message indicating that it couldn't find any entries. If that happens, <a href='#q1'>try these tips</a>.
+    </p>
+    <h3>Edit and Save New People</h3>
+    <p>Make sure to check over the list that was returned. You'll have to manually enter the unit number for each entry that was returned. This should take just a few minutes. If you notice any duplicate names, numbers, or units. feel free to mark the 'checkbox' to exclude that person.</p>
+
+    <p>Now just hit the 'Add People' button and it will save the entries to the database.</p>
+    <h3>Adding just one(1) person, manually.</h3>
+    <p>On the building page, you can also manually add an entry to the database. The address is automatically added for you. This is usually used if the 'Find People wtih 411' button didn't work, or you found some listings from another website.</p>
+
+   	<h3>Tips and Frequently Asked Questions</h3>
+   		
+   	<dl class='questions'>
+   	<dt class='question' id='q1'>Why don't I get any people when I press the 'Get people from 411' button?</dt>
+   		<dd>Double check the address. Did you make a typo?</dd>
+    	<dd>Try modifying the address in the box. Sometimes 411.ca is picky about how the address is formatted. Try <address>123 E 6th Ave.</address> instead of <address>123 6th Ave E.</address></dd>
+    	<dd>Go to <a href="https://411.ca/reverse" target="_BLANK">411.ca</a> and try entering the address in different formats. If it returns people, then try copying the exact format from their website and trying again.</dd>
+    	<dd>If you can find any people listed on 411.ca then maybe there just isn't any publically listed numbers in that building.</dd>
+    </dl>
+
+
   </main>
 {% endblock content %}
