@@ -29,10 +29,13 @@
 			{% endfor %}
 		</ul>
 
-		<strong><a href="{{ path_for('territory_details', { id : territory.id }) }}">Print {{ territory.title }} details</a></strong>
-
 	{% else %}
 		<p>Sorry, territory not found. View <a href="{{ path_for( 'territories' ) }}">all Territories</a></p>
 	{% endif %}
 <em>( territory last updated: {{ territory.last_updated|e }} )</em>
 {% endblock content %}
+
+{% block actions %}
+	<a class="button" href="{{ path_for('territory_edit', { id : territory.id }) }}">Edit Territory {{ territory.title }}</a>
+	<a class='button' href="{{ path_for('territory_details', { id : territory.id }) }}">Print {{ territory.title }} details</a>
+{% endblock actions%}

@@ -1,0 +1,26 @@
+{% extends 'main.twig' %}
+
+{% block title %}Territory: {{ territory.title }} Edit{% endblock title%}
+
+
+{% block content %}
+	<strong>
+		<a href="{{ path_for( 'territory', {'id': territory.id} ) }}">« Back to Territory {{ territory.title }}</a>
+	</strong>
+	<form action='' method='post'>
+		<h2>
+			Territory Name <input class="inline"  autofocus type='text' name='title' value='{{ territory.title }}' >
+		</h2>
+		<input type="hidden" name="_METHOD" value="PUT"/>
+		<input type='submit' value='Update Territory' name='form_edit_territory'>
+	</form>
+	<h3>Buildings</h3>
+	<ul>
+		{% for b in territory.ownBuilding %}
+			<li>{{ b.address }} <a href="{{ path_for( 'building_edit', {'id': b.id} ) }}">Edit</a>
+		{% else %}
+			<strong><a href="{{ path_for( 'territory', {'id': territory.id} ) }}">« Back to Territory {{ territory.title }}</a></strong>
+			<p>Sorry, no buildings in territory.</p>
+		{% endfor %}
+	</ul>
+{% endblock content %}

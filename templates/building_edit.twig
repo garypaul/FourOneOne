@@ -1,0 +1,21 @@
+{% extends 'main.twig' %}
+
+{% block title %}Building: {{ building.address }} Edit{% endblock title%}
+
+
+{% block content %}
+	<strong><a href="{{ path_for( 'territory', {'id': building.territory_id} ) }}">« Back to Territory {{ territory_title }}</a></strong>
+	<form action='' method='post'>
+		<h2>Building details</h2>
+
+		<h3>
+			<label for='address'>Address</label> <input class="inline"  autofocus type='text' name='address' value='{{ building.address }}' >
+		</h3>
+		<input type="hidden" name="_METHOD" value="PUT"/>
+		<input type='submit' value='Update Building' name='form_edit_building'>
+	</form>
+	<h3>People</h3>
+	{% set people = building.ownPerson %}
+	{% set editview = true %}
+	{% include 'partials/people_table.twig' %}
+{% endblock content %}

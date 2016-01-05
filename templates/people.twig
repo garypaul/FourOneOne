@@ -1,0 +1,11 @@
+{% extends 'main.twig' %}
+
+{% block title %}All People{% endblock title%}
+
+
+{% block content %}
+	<strong><a href="{{ path_for( 'territories' ) }}">« Back to Territories</a></strong>
+	<h3>People</h3>
+	{% set showaddress  = true %}
+	{% include 'partials/people_table.twig' %}
+{% endblock content %}

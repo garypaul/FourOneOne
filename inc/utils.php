@@ -26,6 +26,13 @@ function cmpPeople($a, $b){
 	else 
 		return strcmp($a['unit'], $b['unit']);
 }
+function cmpPeopleByAddress($a, $b){
+
+	if($a['address'] == $b['address'])
+		return strcmp($a['unit'], $b['unit']);
+	else 
+		return strcmp($a['address'], $b['address']);
+}
 function getPeopleByAddress( $address ){
 	$PAGE_SIZE = 25;
 	$MAX_PAGES = 5;

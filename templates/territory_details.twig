@@ -16,7 +16,7 @@
 			{% include 'partials/people_table.twig' %}
 		</article>
 	{% else %}
-		<strong><a href="{{ path_for( 'territory', {'id': building.territory_id} ) }}">« Back to Territory {{ territory.title }}</a></strong>
+		<strong><a href="{{ path_for( 'territory', {'id': territory.id} ) }}">« Back to Territory {{ territory.title }}</a></strong>
 		<p>Sorry, no buildings in territory.</p>
 	{% endfor %}
 

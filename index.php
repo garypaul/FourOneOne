@@ -104,13 +104,25 @@ $app->get('/territories', function($request, $response){
 	]);
 })->setName('territories');
 
+$app->get('/people', function($request, $response){
+
+	$items = R::findAll('person');
+
+	usort( $items, 'cmpPeopleByAddress' );
+
+	return $this->view->render($response, 'people.twig', [
+		'people' => $items,
+		'messages' => $this->flash->getMessages(),
+	]);
+})->setName('people');
+
 //Add a territory
 $app->post('/territories', function( $request, $response ){
 	
-	$postdata = $request->getParsedBody();
+	$formdata = $request->getParsedBody();
 	
 	$territory = R::dispense('territory');
-	$territory->title = $postdata['title'];
+	$territory->title = $formdata['title'];
 	$territory->last_updated = R::isoDate();
 	
 	$id = R::store($territory);
@@ -135,8 +147,87 @@ $app->get('/territories/{id:[0-9]+}/details', function($request, $response, $arg
 	// print_p( $territory );
 	return $this->view->render($response, 'territory_details.twig', [
 		'territory' => $territory,
+		'messages' => $this->flash->getMessages(),
 	]);
 })->setName('territory_details');
+
+$app->get('/territories/{id:[0-9]+}/edit', function($request, $response, $args){
+	$type = 'territory';
+	$item = R::load($type, $args['id']);
+	$buildings = $item->ownBuildingList;
+
+	return $this->view->render($response, "{$type}_edit.twig", [
+		$type => $item,
+		'messages' => $this->flash->getMessages(),
+	]);
+})->setName("territory_edit");
+
+$app->get('/buildings/{id:[0-9]+}/edit', function($request, $response, $args){
+	$type = 'building';
+	$item = R::load($type, $args['id']);
+	$people = $item->ownPersonList;
+
+	return $this->view->render($response, "{$type}_edit.twig", [
+		$type => $item,
+		'messages' => $this->flash->getMessages(),
+	]);
+
+})->setName("building_edit");
+
+
+$app->put('/territories/{id:[0-9]+}/edit', function($request, $response, $args){
+	$formdata = $request->getParsedBody();
+	try {
+		if ( empty($formdata['title']) ){
+			$this->flash->addMessage('fail','Territory title can not be blank.');
+			$response = $response->withRedirect( $request->getUri() );
+		}
+		else {
+			$territory = R::load('territory', $args['id']);
+			$old_title = $territory->title;
+			$territory->title = $formdata['title']; 	// Update title
+			$territory->last_updated = R::isoDate(); 	// Update Date
+			R::store($territory); 						// Save
+
+			$this->flash->addMessage('success', "Territory title changed from " . $old_title . " to " . $formdata['title'] );
+			$response = $response->withRedirect( $request->getUri() );
+		}
+	}
+	catch(Exception $e){
+		$response = $response->withStatus(400);
+		$response = $response->withHeader('X-Status-Reason', $e->getMessage());
+	}
+
+	return $response;
+
+});
+
+$app->put('/buildings/{id:[0-9]+}/edit', function($request, $response, $args){
+	$formdata = $request->getParsedBody();
+	try {
+		if ( empty($formdata['address']) ){
+			$this->flash->addMessage('fail','Building address can not be blank.');
+			$response = $response->withRedirect( $request->getUri() );
+		}
+		else {
+			$building = R::load('building', $args['id']);
+			$old = $building->address;
+			$building->address = $formdata['address']; 	// Update title
+			$building->last_updated = R::isoDate(); 	// Update Date
+			R::store($building); 						// Save
+
+			$this->flash->addMessage('success', "Building address changed from " . $old . " to " . $formdata['address'] );
+			$response = $response->withRedirect( $request->getUri() );
+		}
+	}
+	catch(Exception $e){
+		$response = $response->withStatus(400);
+		$response = $response->withHeader('X-Status-Reason', $e->getMessage());
+	}
+
+	return $response;
+
+})->setName('building_edit');
 
 //Get 1 territory
 $app->get('/territories/{id:[0-9]+}', function($request, $response, $args){
@@ -171,12 +262,12 @@ $app->get('/territories/{id:[0-9]+}', function($request, $response, $args){
 // Add building to territory
 $app->post('/territories/{id:[0-9]+}', function($request, $response, $args){
 
-	$postdata = $request->getParsedBody();
+	$formdata = $request->getParsedBody();
 
 	$territory = R::load('territory', $args['id']);
-	$address = $postdata['address'];
-	$city = $postdata['city'];
-	$province = $postdata['province'];
+	$address = $formdata['address'];
+	$city = $formdata['city'];
+	$province = $formdata['province'];
 
 	if( !empty( $address ) ){
 		$address = filter_var( $address, FILTER_SANITIZE_STRING );
@@ -223,18 +314,18 @@ $app->get('/buildings/{id:[0-9]+}/people', function($request, $response, $args){
 
 $app->post('/buildings/{id:[0-9]+}', function($request, $response, $args){
 	
-	$postdata = $request->getParsedBody();
-	// print_p($postdata); die();
+	$formdata = $request->getParsedBody();
+	// print_p($formdata); die();
 	$building = R::load( 'building', $args['id'] );
 
-	if( !empty($postdata['form_get_people_by_address']) ){
-		if( empty($postdata['address']) ){
+	if( !empty($formdata['form_get_people_by_address']) ){
+		if( empty($formdata['address']) ){
 			$this->flash->addMessage('fail', 'Please enter an address');
 			return $response->withRedirect( $request->getUri() );
 		}
-		$new_people = getPeopleByAddress( $postdata['address'] );
+		$new_people = getPeopleByAddress( $formdata['address'] );
 		if( count($new_people) < 1 ){
-			$this->flash->addMessage('fail', 'Sorry, no people could be retrieved at: ' . $postdata['address']);
+			$this->flash->addMessage('fail', 'Sorry, no people could be retrieved at: ' . $formdata['address']);
 			return $response->withRedirect( $request->getUri() );
 		}
 		
@@ -246,23 +337,23 @@ $app->post('/buildings/{id:[0-9]+}', function($request, $response, $args){
 		]);		
 	}
 
-	elseif ( $postdata['form_add_people']) {
+	elseif ( $formdata['form_add_people']) {
 		// Add people to building
-		$new_people = $postdata['people'];
+		$new_people = $formdata['people'];
 		usort($new_people, 'cmpPeople'); 
 		foreach ($new_people as $p) {
 			savePersonToBuilding( $p, $building );
 		}
 		// Save building
 		R::store($building);
-		$this->flash->addMessage('success', 'Added ' . count( $postdata['people'] ) . ' new people to building.');
+		$this->flash->addMessage('success', 'Added ' . count( $formdata['people'] ) . ' new people to building.');
 		return $response->withRedirect( $request->getUri() );    
 	}
 
-	elseif ( !empty($postdata['form_add_person']) ) {
+	elseif ( !empty($formdata['form_add_person']) ) {
 		// echo 'NOT YET';
 		// print_p( $building->ownPersonList ); 
-		savePersonToBuilding( $postdata['person'], $building );
+		savePersonToBuilding( $formdata['person'], $building );
 		// echo 'ADDED:';
 		// print_p( $building->ownPersonList ); 
 		R::store( $building );
