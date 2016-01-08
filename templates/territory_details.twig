@@ -1,18 +1,28 @@
 {% extends 'main.twig' %}
+{% set active_page = "territories" %}
 
 {% block title %}Territory: {{ territory.title }} Details{% endblock title%}
 
+{% block afterfooter %}
+	<style>
+	main { 
+		position: relative;
+		top: 0; 
+	}
+	</style>
+{% endblock afterfooter %}
 
 {% block content %}
-	
-	<h2>
+
+	<h1>
 		<a href="{{ path_for( 'territory', {'id': territory.id} ) }}">Territory: {{ territory.title }}</a>
-	</h2>
+	</h1>
 	{% for b in territory.ownBuilding %}
 		<article class="building">
 		<h2>Address: {{ b.address }}</h2>
 			{% set people = b.ownPerson %}
 			{% set printview = true %}
+			{% set legend = true %}
 			{% include 'partials/people_table.twig' %}
 		</article>
 	{% else %}

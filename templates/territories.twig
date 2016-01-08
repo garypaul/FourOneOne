@@ -1,10 +1,10 @@
 {% extends 'main.twig' %}
+{% set active_page = "territories" %}
 
-{% block title %}Territories{% endblock title %}
-
+{% block title 'All Territories' %}
 {% block content %}
 
-	<strong>Clark</strong>
+	<strong>Clark Congregation</strong>
 	<h2>Phone Territories</h2>
 
 	<strong>Add territory:</strong>
@@ -14,13 +14,14 @@
 		<input type='submit'name='form_add_territory' value="Add Territory">
 	</form>
 	<strong>All territories:</strong>
-	<ul class='box-list'>
+	<ul class="box-list">
 	{% for t in territories %}
 		
 		{% if t.id == added_id %}
 			{% set class = 'added' %}
 		{% endif %}
-		<li class = '{{ class }}'><a href="{{ path_for('territory', {'id': t.id}) }}">{{ t.title }}</a></li>
+		<li class = '{{ class }}'><a href="{{ path_for('territory', {'id': t.id}) }}">{{ t.title }} </a> {{ t.total_people }} calls
+		</li> 
 	{% else %}
 		<li><p>No territories were found. Add one!</p></li>
 	{% endfor %}

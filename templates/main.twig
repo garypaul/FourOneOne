@@ -4,9 +4,10 @@
 <head>
   {% block head %}
     <meta charset="utf-8">
-    <title>{% block title %}FourOneOne DB{% endblock title %} | {% block congregation %}Clark{% endblock %}</title>
+    <title>{% block title %}FourOneOne DB{% endblock title %} | {% block congregation %}Clark{% endblock %} Congregation</title>
     <meta name="description" content="FourOneOne">
     <meta name="author" content="Gary Armstrong">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/css/master.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -14,19 +15,29 @@
   {% endblock head %}
 </head>
 
-<body>
+<body class='{% block body_class 'page' %}'>
 
   {% include 'partials/flash.twig' %}
 
-
   <header>
-    <h1>FourOneOne DB</h1>
-    <nav>
-      <a href="{{ base_url() }}" class="selected">Home</a>
-      <a href="{{ path_for('territories') }}">Territories</a>
-      <a href="{{ path_for('buildings') }}">Buildings</a>
-      {# <a href="{{ path_for('people') }}"></a> #}
-    </nav>
+    <h1 class="site-title"><span>{{ block("congregation") }} Congregation</span>FourOneOne DB</h1>
+    {% set navigation_items = [
+      ['home', 'Home'], 
+      ['territories', 'Territories'], 
+      ['buildings', 'Buildings'],
+      ['people', 'People'],
+    ] %}
+
+    {% set active_page = active_page|default('home') %}
+    {% block navigation %}
+		<nav>
+			{% for item in navigation_items %}
+				<a href="{{ path_for( item[0] ) }}" {% if item[0] == active_page %}class='active'{% endif %} >
+					{{ item[1]}} 
+				</a>
+			{% endfor %}
+		</nav>
+    {% endblock navigation%}
   </header>
 
 {#   <div class="emerson">
@@ -34,6 +45,10 @@
   </div> #}
 
   <main>
+		<nav class='actions'>
+			{% block actions %}
+			{% endblock actions %}
+		</nav>
     {% block content %}
     {% endblock content %}
   </main>
@@ -44,8 +59,6 @@
     {% block footer %}
       <p>A project by <strong><a href="http://armstrongest.com">Gary Armstrong</a></strong></p>
       <nav>
-        {% block actions %}
-        {% endblock actions %}
         <a href="{{ base_url() }}" class="selected">Home</a>
         <a href="{{ path_for('territories') }}">Territories</a>
 
@@ -53,9 +66,9 @@
     {% endblock footer %}
   </footer>
 
-
-{% block scripts %}
-{% endblock scripts %}
+{# page-level style and javascript #}
+{% block after_footer %}
+{% endblock after_footer %}
 
 </body>
 </html>
