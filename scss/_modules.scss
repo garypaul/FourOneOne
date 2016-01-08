@@ -1,4 +1,10 @@
-
+nav.actions {
+	.button {
+		font-size: .8em;
+		padding: .8em 1em .6em;
+	}
+	margin-bottom: 1em;
+}
 .box-list {
 	list-style: none;
 	display: flex;
@@ -11,8 +17,9 @@
 		padding: 0;
 		border-radius: 5px;
 		border: 2px solid $dark-teal;
-		margin: .5em .5em .5em 0;
-		min-width: 100px;
+		margin: .5em 1% .5em 0;
+		min-width: 80px;
+		// width: 31%;
 		text-align: center;
 		&:hover, &:active, &:focus  {
 			background: $teal;
@@ -23,6 +30,7 @@
 			padding: .5em;
 			display: block;
 			font-size: 2em;
+			white-space: nowrap;
 		}
 	}
 }
