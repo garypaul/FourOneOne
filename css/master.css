@@ -262,7 +262,7 @@
       border-radius: 5px;
       border: 2px solid #48a39d;
       margin: .5em 1% .5em 0;
-      min-width: 80px;
+      min-width: 100px;
       text-align: center; }
       .box-list li:hover, .box-list li:active, .box-list li:focus {
         background: #53bbb4; }

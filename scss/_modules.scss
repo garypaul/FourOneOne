@@ -14,11 +14,12 @@ nav.actions {
 	margin: 0;
 	
 	li {
+		//flex-grow: 1;
 		padding: 0;
 		border-radius: 5px;
 		border: 2px solid $dark-teal;
 		margin: .5em 1% .5em 0;
-		min-width: 80px;
+		min-width: 100px;
 		// width: 31%;
 		text-align: center;
 		&:hover, &:active, &:focus  {

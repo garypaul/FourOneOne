@@ -3,7 +3,7 @@ use linclark\MicrodataPHP\MicrodataPhp;
 
 function print_p($data, $wrapper = 'pre'){
 	echo '<'. $wrapper .'>';
-	print_r($data);
+	print_r( $data );
 	echo '</'. $wrapper .'>';
 }
 
@@ -19,13 +19,66 @@ function savePersonToBuilding( $p, $building ){
 
 	$building->xownPersonList[] = $person;
 }
-function cmpPeople($a, $b){
 
-	if($a['unit'] == $b['unit'])
-		return strcmp($a['name'], $b['name']);
-	else 
-		return strcmp($a['unit'], $b['unit']);
+/**
+ * @param  string $type Entity type name ( lower case, please )
+ * @param  Array $formdata Assoc Array of $key and $value you want to update  
+ * @param  integer $id ID of entity you want to update. Default is 0 ( new ).
+ * @return bean 
+ */	
+function save_entity_with_array( $type = '', Array $formdata, $id = 0 ){
+	if ( !$type ) throw new Exception("No entity specified.");
+	
+	$bean = $id ? R::load( $type, $id ) : R::dispense( $type );
+	// This compares the values in the exported version of the entity and the submitted values
+	// If a new bean has been dispensed.
+	// NOTE: Essentially, this discards any invalid properties in the formdata. 
+	$changes = array_diff_assoc($bean->export(), $formdata);
+	if( empty($changes) ) throw new Exception("No changes made");
+	
+	// Iterate through the keys that have changed and update bean.
+	foreach ($changes as $key => $value) {
+		$bean[$key] = $formdata[$key];
+	}
+	$id = R::store( $bean ); // Save bean and return ID of saved bean.
+	return $bean;
 }
+
+
+function cmpByKey( $key, $sort = 'ASC' ){
+	return function($a, $b) use($key, $sort) {
+		return ($sort == 'ASC') 
+			? strcmp($a[$key], $b[$key]) 
+			: strcmp($a[$key], $b[$key]);  
+	};
+}
+function cmpByStreetName( $sort = 'ASC' ){
+	// return delegate function
+	return function($a, $b) use( $sort ) {
+			// switch if it's descending sort order
+			if ($sort == 'DESC'){
+				$tmp = $a;
+				$a = $b;
+				$b = $tmp;
+			}
+
+			$key = 'address';
+			// test if addresses are the same
+			$comp = cmpBy2ndWord($a[$key], $b[$key]);
+			
+			// if street names are == then sort by unit ( secondary sort )
+			if($comp == 0)
+				return $a['unit'] > $b['unit'];
+			else
+				return $comp;
+	};
+}
+
+function cmpBy2ndWord($a, $b){
+	return strcmp( substr($a, strpos($a, ' ')) , substr($b, strpos($b, ' ')) );
+}
+
+
 function cmpPeopleByAddress($a, $b){
 
 	if($a['address'] == $b['address'])

@@ -1,4 +1,13 @@
+<p>{{ people|length }} people </p>
 <table class="people">
+	{% if legend %}
+		<caption class='legend'>
+			<h3>Status</h3>
+			<abbr title="Do Not Call">DNC</abbr>
+			<abbr title="Not in Service">NIS</abbr>
+			<abbr title="No Answer">NH</abbr>
+		</caption>
+	{% endif %}
 	<thead>
 		<tr>
 			<th class='name'>Name</th>	
@@ -20,8 +29,10 @@
 	</thead>
 	<tbody>
 	{% for p in people %}
-		<tr>
-			<td class="name">{{ p.name }}</td>
+		<tr data-id='{{p.id}}'>
+			<td class="name">
+				<a href="{{ path_for('person_edit', {id : p.id } ) }}">
+				{{ p.name }}</a></td>
 			{% if showaddress %}
 				<td><a href="{{ path_for('building', { id : p.building_id })}}">{{ p.address }}</a></td>
 			{% endif %}

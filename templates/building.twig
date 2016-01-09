@@ -3,6 +3,10 @@
 
 {% block title %}Building: {{ building.address }}{% endblock title%}
 
+{% block actions %}
+	<a class="button" href="{{ path_for('building_edit', { id : building.id }) }}">Edit Building</a>
+{% endblock actions%}
+
 {% block content %}
 	{% if building %}
 
@@ -55,18 +59,16 @@
 		
 		{% if people %}
 			{% include 'partials/people_table.twig' %}
-
-			<strong>Add person</strong>
-			{% include 'partials/form_add_person.twig' %}
 		{% endif %}
-	
+		<strong>Add person</strong>
+		{% include 'partials/forms/add_person.twig' %}
 	{% else %}
 		<strong><a href="{{ path_for('territories') }}">« All Territories</a></strong>
 		<p>Sorry, building not found.</p>
 	{% endif %}
 
 {% endblock content %}
-{% block scripts %}
+{% block after_footer %}
 	<script>
 	function processEachNode ( nodeList, action ){
 		for( var i = 0, node; node = nodeList[i]; i++ ){
@@ -112,4 +114,4 @@
 	});
 
 </script>
-{% endblock scripts %}
+{% endblock after_footer %}

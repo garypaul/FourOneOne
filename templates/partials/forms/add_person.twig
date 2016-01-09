@@ -1,0 +1,39 @@
+<form action='' class="" method='POST'>
+	{% set form_action = action ?: 'add' %}
+	<table>
+		<thead>
+			<thead>
+			<tr>
+				<th class='name'>Name</th>
+				<th class='address'>Address</th>
+				<th class='unit'>Unit</th>
+				<th class='postcode'>Post Code</th>
+				<th class='phone'>Phone</th>
+				<th></th>
+			</tr>
+		</thead>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="name">
+					<input type='hidden' name="person[id]" value='{{ person.id ?: 0}}'>
+					<input type='text' placeholder='John Smith' name='person[name]' value="{{ person.name|e }}">
+				</td>
+				<td class="address">
+					<input type='text' placeholder='123 Sesame St.' name='person[address]' value="{{ building.address }}" ></td>
+				<td class="unit">
+					<input type='text' placeholder='101' name='person[unit]' value='{{person.unit }}'>
+				</td>
+				<td class="postcode">
+					<input type='text' placeholder='V5V 5V5' name='person[postcode]' value="{{ person.address|e }}">
+				</td>
+				<td class="phone">
+					<input type='text' placeholder='###-###-####' name='person[number]' value="{{ person.number|e }}" >
+				</td>
+				<td>
+					<input name="form_{{ form_action }}_person" type='submit' value='{{ form_action|title }}'>
+				</td>
+			</tr>
+		</tbody>
+	</table>	
+</form>	

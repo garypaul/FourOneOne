@@ -1,0 +1,12 @@
+<phpunit processIsolation='false'
+	bootstrap='./tests/bootstrap.php'>
+	<filter>
+		<blacklist>
+			<directory>vendor</directory>
+		</blacklist>
+	</filter>
+	<testsuite name='tests'>
+		<directory>tests</directory>
+	</testsuite>
+
+</phpunit>

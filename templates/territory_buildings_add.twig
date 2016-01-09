@@ -1,0 +1,23 @@
+{% extends 'territory.twig' %}
+
+{% block title %}Territory: {{ territory.title }}{% endblock title %}
+
+{% block content_before %}
+	<strong><a href="{{ path_for( 'territory', { id : territory.id } ) }}">« Territory {{ territory.title }}</a></strong>
+
+	<strong>Add Building</strong>
+		<form action="/territories/{{ territory.id }}/buildings" method="POST">
+			<label for='address'>Street Address:</label>
+
+			<input type='text' class="inline" name="address" autofocus placeholder="2414 Matthaios Way">		
+			<input type='submit' name='form_add_building' value="Add building">
+
+			<input type='hidden' name="city" value="Vancouver">
+			<input type='hidden' name="province" value='BC'>
+			<input type='hidden' name="territory_id" value='{{ territory.id }}'/>
+
+		</form>
+{% endblock content_before %}
+
+{% block actions %}
+{% endblock actions %}

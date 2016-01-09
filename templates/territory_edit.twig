@@ -1,14 +1,16 @@
-{% extends 'main.twig' %}
-{% set active_page = "territories" %}
+{% extends 'territories.twig' %}
 
 {% block title %}Territory: {{ territory.title }} Edit{% endblock title%}
 
-
-{% block content %}
+{% block content_before %}
 	<strong>
 		<a href="{{ path_for( 'territory', {'id': territory.id} ) }}">« Back to Territory {{ territory.title }}</a>
 	</strong>
-	<form action='' method='post'>
+{% endblock content_before %}
+
+{% block content %}
+
+	<form action='{{ path_for('territory', { id : territory.id } ) }}' method='post'>
 		<h2>
 			Territory Name <input class="inline"  autofocus type='text' name='title' value='{{ territory.title }}' >
 		</h2>

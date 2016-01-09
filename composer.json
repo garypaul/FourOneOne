@@ -9,6 +9,9 @@
         "slim/php-view": "^2.0",
         "slim/flash": "^0.1.0"
     },
+    "require-dev": {
+        "whatthejeff/nyancat-phpunit-resultprinter": "~1.2"
+    },
     "authors": [
         {
             "name": "Gary Armstrong",

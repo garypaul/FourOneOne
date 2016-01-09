@@ -45,6 +45,9 @@
   </div> #}
 
   <main>
+  	<div class='content_before'>
+  		{% block content_before '' %}
+  	</div>
 		<nav class='actions'>
 			{% block actions %}
 			{% endblock actions %}
@@ -57,7 +60,7 @@
     <hr>
 
     {% block footer %}
-      <p>A project by <strong><a href="http://armstrongest.com">Gary Armstrong</a></strong></p>
+      <p>A project by <strong><a href="http://armstrongest.com">Gary</a></strong></p>
       <nav>
         <a href="{{ base_url() }}" class="selected">Home</a>
         <a href="{{ path_for('territories') }}">Territories</a>

@@ -1,6 +1,4 @@
-{% extends 'main.twig' %}
-{% set active_page = "territories" %}
-
+{% extends 'territories.twig' %}
 {% block title %}Territory: {{ territory.title }} Details{% endblock title%}
 
 {% block afterfooter %}
@@ -15,11 +13,11 @@
 {% block content %}
 
 	<h1>
-		<a href="{{ path_for( 'territory', {'id': territory.id} ) }}">Territory: {{ territory.title }}</a>
+		Territory: <a href="{{ path_for( 'territory_edit', {'id': territory.id} ) }}">{{ territory.title }}</a>
 	</h1>
 	{% for b in territory.ownBuilding %}
 		<article class="building">
-		<h2>Address: {{ b.address }}</h2>
+		<h2>Address: <a href="{{ path_for('building', {id : b.id } ) }}">{{ b.address }}</a></h2>
 			{% set people = b.ownPerson %}
 			{% set printview = true %}
 			{% set legend = true %}
