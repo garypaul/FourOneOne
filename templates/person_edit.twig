@@ -1,5 +1,11 @@
 {% extends 'main.twig' %}
 {% set active_page = 'people' %}
+{% block actions %}
+	<form action='{{ path_for('person', { id : person.id } )}}' method='POST'>
+		<input type='hidden' name="_METHOD" value="DELETE">
+		<input type='submit' class="button" value="Delete">
+	</form>
+{% endblock actions %}
 {% block content %}
 	<article>
 		{% include 'partials/forms/form_person.twig' %}

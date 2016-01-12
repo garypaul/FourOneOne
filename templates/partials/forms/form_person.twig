@@ -1,33 +1,37 @@
-<form action='' class="form_person" method='POST'>
-	{% set form_action = 'add' %}
-	
+	{% set form_action = path_for('people') %}
+	{% set submit_label = 'add' %}
 	{% if person.id > 0 %}
 		{# IF we passed a person, this is a PUT form, as we want to edit. Otherwise it's a POST as we want to add #}
-		{% set form_action = 'update' %}
+		{% set submit_label = 'update' %}
+		{% set form_action = path_for('person', {id : person.id} ) %}
 		<input type="hidden" name="_METHOD" value="PUT"/>
 	{% endif %}
 
+
+<form action='{{ form_action }}' class="form_person" method='POST'>
+	
 	<table>
+		{% if not hide_thead %}
 		<thead>
-			<thead>
 			<tr>
 				<th class='name'>Name</th>
-				<th class='address'>Address</th>
+				{# <th class='address'>Address</th> #}
 				<th class='unit'>Unit</th>
 				<th class='postcode'>Post Code</th>
 				<th class='phone'>Phone</th>
 				<th></th>
 			</tr>
 		</thead>
-		</thead>
+		{% endif %}
 		<tbody>
 			<tr>
 				<td class="name">
 					<input type='hidden' name="person[id]" value='{{ person.id ?: 0}}'>
+					<input type='hidden' name="person[building_id]" value='{{ building_id ?: 0}}'>
 					<input type='text' placeholder='John Smith' name='person[name]' value="{{ person.name|e }}">
 				</td>
-				<td class="address">
-					<input type='text' placeholder='123 Sesame St.' name='person[address]' value="{{ person.address }}" ></td>
+				{# <td class="address">
+					<input type='text' placeholder='123 Sesame St.' name='person[address]' value="{{ person.address }}" ></td> #}
 				<td class="unit">
 					<input type='text' placeholder='101' name='person[unit]' value='{{person.unit }}'>
 				</td>
@@ -38,7 +42,7 @@
 					<input type='text' placeholder='###-###-####' name='person[number]' value="{{ person.number|e }}" >
 				</td>
 				<td>
-					<input name="form_{{ form_action }}_person" type='submit' value='{{ form_action|title }}'>
+					<input type='submit' name='form_{{submit_label}}_people' value='{{ submit_label|title }} Person'>
 				</td>
 			</tr>
 		</tbody>

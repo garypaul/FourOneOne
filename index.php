@@ -5,9 +5,21 @@ include __DIR__ . '/bootstrap.php';
 // Define home route
 $app->get('/', function ($request, $response) {
 	return $this->view->render($response, 'about.twig', [
-		//'name' => $args['name']
+		'messages' => $this->flash->getMessages(),
 	]);
 })->setName('home');
+
+$app->get('/error', function ($request, $response) {
+	$response = $response->withHeader('X-Status-Reason', $this->flash->getMessage('error'));
+	print_p( $this->flash->getMessages() ); die();
+	return $this->view->render($response->withStatus(400), 'error.twig', [
+		'messages' => $this->flash->getMessages(),
+		'error_detail' => $this->flash->getMessages(),
+	]);
+})->setName('error');
+
+
+include __DIR__ . '/routes_signouts.php';
 
 include __DIR__ . '/routes_territories.php';
 

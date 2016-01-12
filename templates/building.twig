@@ -19,6 +19,7 @@
 			{# Yay! New peoples. Let's put them into a form #}
 			<form method='post' class="add_people" action="" id='add_people'>
 				<table class="people">
+					
 					<legend>Add People</legend>
 					<thead>
 						<tr>
@@ -60,8 +61,6 @@
 		{% if people %}
 			{% include 'partials/people_table.twig' %}
 		{% endif %}
-		<strong>Add person</strong>
-		{% include 'partials/forms/add_person.twig' %}
 	{% else %}
 		<strong><a href="{{ path_for('territories') }}">« All Territories</a></strong>
 		<p>Sorry, building not found.</p>

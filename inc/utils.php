@@ -6,18 +6,52 @@ function print_p($data, $wrapper = 'pre'){
 	print_r( $data );
 	echo '</'. $wrapper .'>';
 }
+/**
+ * @param  String Entity name ( 'territory', 'building', 'person')
+ * @param  Array  Array of form data. Single item, not nested.
+ * @return Object RedBean entity
+ */
+function createEntityWithArray( $type, $array ){
+	// New up the entity
+	$entity = R::dispense($type);
 
-function savePersonToBuilding( $p, $building ){
-	//print_p( $p );
-	$person = R::dispense('person');
-	$person->name = trim($p['name']);
-	$person->address = trim($p['address']);
-	$person->unit = trim($p['unit']);
-	$person->postcode = trim($p['postcode']);
-	$person->number = trim($p['number']);
-	$person->last_updated = R::isoDate();
+	// Get all valid field names and foreign keys
+	$fieldnames = R::inspect( $type );
 
-	$building->xownPersonList[] = $person;
+	// strip out invalid keys from formdata
+	$valid_fields = array_intersect_key($fieldnames, $array);
+	
+	// iterate over valid keys and add each one
+	foreach ($valid_fields as $key => $value ) {
+		$entity[$key] = trim($array[$key]);
+	}
+	return $entity;
+}
+
+/**
+ * @param  String  Entity name 'territory', 'building', 'person', etc.
+ * @param  Numeric Id of entity to compare against in db
+ * @param  Array  Array of form data. Single item, not nested.
+ * @return Object RedBean entity
+ */
+function updateEntityWithArray( $type, $id, $array ){
+	// New up the entity
+	$entity = R::load($type, $id);
+	
+	// Get changed data only
+	$differences = array_diff_assoc( $array, $entity->export() );
+	
+	// get valid field names
+	$fieldnames = R::inspect( $type );
+
+	// find the valid fields from updaed values and valid fieldnames
+	$valid_fields = array_intersect_key($fieldnames, $differences);
+	
+	// only iterate over valid fields that are also updated.
+	foreach ($valid_fields as $key => $value ) {
+		$entity[$key] = trim($array[$key]);
+	}
+	return $entity;
 }
 
 /**

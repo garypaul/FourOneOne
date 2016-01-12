@@ -106,7 +106,7 @@
     header nav {
       font-size: 16px; }
     header nav a {
-      margin: 0px 20px;
+      margin: 0px .5em;
       color: #fff;
       padding: 0 10px;
       opacity: .7;
@@ -254,48 +254,60 @@
     list-style: none;
     display: flex;
     flex-flow: row wrap;
-    justify-content: flex-start;
+    justify-content: space-between;
     padding: 0;
     margin: 0; }
     .box-list li {
-      padding: 0;
+      padding: .25em;
       border-radius: 5px;
       border: 2px solid #48a39d;
-      margin: .5em 1% .5em 0;
-      min-width: 100px;
+      margin: .5em 2px .5em;
+      min-width: 88px;
       text-align: center; }
       .box-list li:hover, .box-list li:active, .box-list li:focus {
         background: #53bbb4; }
         .box-list li:hover a, .box-list li:active a, .box-list li:focus a {
           color: #eee; }
-      .box-list li a {
-        padding: .5em;
-        display: block;
-        font-size: 2em;
-        white-space: nowrap; }
+      .box-list li:empty {
+        height: 0;
+        border: none; }
+    .box-list a {
+      display: block;
+      font-size: 2em;
+      white-space: nowrap; }
+      .box-list a .calls {
+        padding: .25em; }
 
-  .people td {
-    border: 1px solid #eee; }
-  .people th, .people td {
-    padding: 5px 8px; }
-  .people .unit, .people .postcode, .people .phone {
-    text-align: center; }
-  .people .name, .people .address {
-    min-width: 130px; }
-  .people .unit {
-    width: 80px; }
-  .people .postcode {
-    width: 110px;
-    white-space: nowrap; }
-  .people .phone {
-    width: 150px;
-    white-space: nowrap; }
-  .people .notes {
-    width: 200px;
-    text-align: center; }
-  .people input[type='text'] {
-    opacity: 1;
-    transition: all .8s ease; }
+  .people {
+    width: 100%; }
+    .people td {
+      border: 1px solid #eee; }
+      .people td table {
+        margin-bottom: 0; }
+      .people td table td {
+        border: none; }
+    .people th, .people td {
+      padding: 5px 8px; }
+    .people .unit, .people .postcode, .people .phone {
+      text-align: center; }
+    .people .name {
+      min-width: 130px; }
+    .people .address {
+      min-width: 160px; }
+    .people .unit {
+      width: 80px; }
+    .people .postcode {
+      width: 110px;
+      white-space: nowrap; }
+    .people .phone {
+      width: 150px;
+      white-space: nowrap; }
+    .people .notes {
+      width: 200px;
+      text-align: center; }
+    .people input[type='text'] {
+      opacity: 1;
+      transition: all .8s ease; }
 
   .disabled * {
     transition: all .5s ease; }
@@ -346,6 +358,12 @@
     .dismiss:hover {
       opacity: 1;
       text-decoration: none; }
+
+  .small {
+    font-size: .75em; }
+
+  .quiet {
+    color: rgba(90, 103, 114, 0.5); }
 
   @-webkit-keyframes feedback-in {
     0% {

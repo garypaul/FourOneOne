@@ -3,22 +3,23 @@
 {% block title %}Territory: {{ territory.title }}{% endblock title %}
 
 {% block content_before %}
-	<strong><a href="{{ path_for( 'territories' ) }}">« All Territories</a></strong>
+	{{ parent() }}
+	
 {% endblock content_before %}
 
 {% block content %}
 	{% if territory %}
 		<h2>Territory: {{ territory.title|e }} </h2>
-		<strong>Buildings</strong>
-		<ul class="box-list">
+		<h3>Buildings</h3>
+		{# <ul class="box-list"> #}
 			{% for b in buildings %}
-				<li>
-					<a href="{{ path_for('building', {'id': b.id}) }}">{{ b.address|e }}</a>
-				</li>
+				<h3>
+					Address: <a href="{{ path_for('building', {'id': b.id}) }}">{{ b.address|e }}</a> <span class='small quiet'>({{ b.total_people }} people)</span>
+				</h3>
 			{% else %}
-				<li><p>No buildings found.</p></li>
+				<h3>No buildings found.</h3>
 			{% endfor %}
-		</ul>
+		{# </ul> #}
 
 	{% else %}
 		<p>Sorry, territory not found. View <a href="{{ path_for( 'territories' ) }}">all Territories</a></p>
@@ -27,7 +28,7 @@
 {% endblock content %}
 
 {% block actions %}
+	<a class="button" href="{{ path_for( 'territories' ) }}">« All Territories</a>
 	<a class='button' href="{{ path_for('territory_edit', { id : territory.id }) }}">Edit Territory {{ territory.title }}</a>
-	<a class='button' href="{{ path_for('territory_details', { id : territory.id }) }}">Print {{ territory.title }} details</a>
 	<a class='button' href="{{ path_for('territory_buildings_add', { id : territory.id }) }}">Add Building</a>
 {% endblock actions%}

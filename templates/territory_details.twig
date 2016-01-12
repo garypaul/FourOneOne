@@ -1,4 +1,4 @@
-{% extends 'territories.twig' %}
+{% extends 'territory.twig' %}
 {% block title %}Territory: {{ territory.title }} Details{% endblock title%}
 
 {% block afterfooter %}
@@ -13,9 +13,9 @@
 {% block content %}
 
 	<h1>
-		Territory: <a href="{{ path_for( 'territory_edit', {'id': territory.id} ) }}">{{ territory.title }}</a>
+		Territory: <strong>{{ territory.title }}</strong>
 	</h1>
-	{% for b in territory.ownBuilding %}
+	{% for b in buildings %}
 		<article class="building">
 		<h2>Address: <a href="{{ path_for('building', {id : b.id } ) }}">{{ b.address }}</a></h2>
 			{% set people = b.ownPerson %}
@@ -24,8 +24,9 @@
 			{% include 'partials/people_table.twig' %}
 		</article>
 	{% else %}
-		<strong><a href="{{ path_for( 'territory', {'id': territory.id} ) }}">« Back to Territory {{ territory.title }}</a></strong>
+		{# <strong><a href="{{ path_for( 'territory', {'id': territory.id} ) }}">« Back to Territory {{ territory.title }}</a></strong> #}
 		<p>Sorry, no buildings in territory.</p>
 	{% endfor %}
 
 {% endblock content %}
+

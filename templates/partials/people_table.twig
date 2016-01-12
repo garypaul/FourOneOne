@@ -9,20 +9,20 @@
 		</caption>
 	{% endif %}
 	<thead>
+		{% set column_count = 4 %}
 		<tr>
 			<th class='name'>Name</th>	
 			{% if showaddress %}
 				<th class='address'>Address</th>
+				{% set column_count = column_count + 1 %}				
 			{% endif %}					
 			<th class='unit'>Unit</th>
 			<th class='postcode'>Post Code</th>
 			<th class='phone'>Phone</th>
 			{% if printview %}
-			<th class='actions'>Status</th>
-			<th class="notes">Notes</th>
-			{% endif %}
-			{% if editview %}
-				<th></th>
+				{% set column_count = column_count + 1 %}
+				<th class='actions'>Status</th>
+				<th class="notes">Notes</th>
 			{% endif %}
 
 		</tr>
@@ -30,27 +30,38 @@
 	<tbody>
 	{% for p in people %}
 		<tr data-id='{{p.id}}'>
+			
 			<td class="name">
 				<a href="{{ path_for('person_edit', {id : p.id } ) }}">
 				{{ p.name }}</a></td>
 			{% if showaddress %}
 				<td><a href="{{ path_for('building', { id : p.building_id })}}">{{ p.address }}</a></td>
+				
 			{% endif %}
 			<td class="unit">{{ p.unit }}</td>
 			<td class="postcode">{{ p.postcode }}</td>
 			<td class="phone">{{ p.number }}</td>
 			{% if printview %}
+			{% set column_count = column_count + 2 %}
+				
 			<td class='actions'></td>
 			<td class="notes"></td>
-			{% endif %}
-			{% if editview %}
-				<td class='edit'><a href="#">edit</a></td>
 			{% endif %}
 		</tr>
 	{% else %}
 		<tr>
-			<td colspan='7'><p>No People listed in building</p></td>	
+			<td colspan='{{ column_count }}'><p>No People listed in building</p></td>	
 		</tr>
 	{% endfor %}
+	{% if not printview %}
+		<tfoot>
+			<tr>
+				<td colspan="{{ column_count }}">
+					{% include 'partials/forms/form_person.twig' %}
+					
+				</td>
+			</tr>
+		</tfoot>
+	{% endif %}
 	</tbody>
 </table>

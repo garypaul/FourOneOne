@@ -45,13 +45,14 @@
   </div> #}
 
   <main>
+    <nav class='actions'>
+      {% block actions %}
+      {% endblock actions %}
+    </nav>
   	<div class='content_before'>
-  		{% block content_before '' %}
+  		{% block content_before '<strong>Clark Congregation</strong>' %}
   	</div>
-		<nav class='actions'>
-			{% block actions %}
-			{% endblock actions %}
-		</nav>
+
     {% block content %}
     {% endblock content %}
   </main>

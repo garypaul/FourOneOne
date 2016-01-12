@@ -3,3 +3,4 @@
 cache
 vendor
 test.php
+sftp-config.json

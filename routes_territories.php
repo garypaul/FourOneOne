@@ -40,16 +40,24 @@ $app->group('/territories', function(){
 		}
 		catch (Exception $e) {
 			$this->flash->addMessage( 'fail', $e->getMessage() );
+			$response = $response->withHeader('X-Status-Reason', $e->getMessage());
 			return $this->view->render($response->withStatus(400), 'territory_add.twig');
 		}
 		
 		$this->flash->addMessage('success', 'Added territory '. $territory->title );
-		$newItem = $this->router->pathFor('territory', [ 'id' => $id ] );
-		return $response->withRedirect( $newItem );
+		$addBuilding = $this->router->pathFor('territory_buildings_add', [ 'id' => $id ] );
+		return $response->withRedirect( $addBuilding );
 	});	
-
+	// territories/add
 	$this->get('/add', function($request, $response){
+		try {
+			$territories = R::findAll('territory');
+		} catch (Exception $e) {
+			$this->messages->addMessage( $e->getMessage() );
+			return $response->withRedirect( $request->getUri() );
+		}
 		return $this->view->render($response, 'territory_add.twig', [
+			'territories' => R::exportAll( $territories ),
 			'messages' => $this->flash->getMessages(),
 		]);		
 	})->setName('territory_add');
@@ -68,13 +76,11 @@ $app->group('/territories/{id:[0-9]+}', function(){
 
 		try {
 			$territory = R::load('territory', $args['id']);
-			// if( $territory->id == 0 ) {
-			// 	$territory = false;
-			// 	throw new ResourceNotFoundException('id ' . $args['id']. ' not found in database.');
-			// }
-			// else {
-				$buildings = $territory->ownBuildingList;
-			// }
+			foreach ($territory->ownBuildingList as $b) {
+				$building = $b->export();
+				$building['total_people'] = count( $b->ownPersonList );
+				$buildings[] = $building;
+			}
 		}
 		catch(ResourceNotFoundException $e){
 			$response = $response->withStatus(404);
@@ -122,12 +128,20 @@ $app->group('/territories/{id:[0-9]+}', function(){
 
 	});
 
+	// territories/[id]/buildings/add
 	$this->get('/buildings/add', function($request, $response, $args){
-		$type = 'territory';
-		$item = R::load($type, $args['id']);
+		
+		$territory = R::load('territory', $args['id']);
+		$buildings = $territory->ownBuildingList;
+		// foreach ($buildings as $b) {
+		// 	$people[] = $b->ownPersonList;
+		// }		
+
+
 		return $this->view->render($response, "territory_buildings_add.twig", [
-			$type => $item,
-			'buildings' => $item->ownBuildingList,
+			// $type => $item,
+			'territory' => $territory,
+			'buildings' => $buildings,
 			'messages' => $this->flash->getMessages(),
 		]);
 
@@ -180,9 +194,16 @@ $app->group('/territories/{id:[0-9]+}', function(){
 		$buildings = $territory->ownBuildingList;
 		foreach ($buildings as $b) {
 			$people[] = $b->ownPersonList;
+			// echo count($b->ownPersonList); 
 		}
+		
+		usort($buildings, function($a, $b){
+			return count($a->ownPersonList) < count($b->ownPersonList);
+		});
+
 		// print_p( $territory );
 		return $this->view->render($response, 'territory_details.twig', [
+			'buildings' => $buildings,
 			'territory' => $territory,
 			'messages' => $this->flash->getMessages(),
 		]);

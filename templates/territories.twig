@@ -4,7 +4,6 @@
 	
 {% block content %}
 
-	<strong>Clark Congregation</strong>
 	<h2>Phone Territories</h2>
 
 	<ul class="box-list">
@@ -13,11 +12,20 @@
 		{% if t.id == added_id %}
 			{% set class = 'added' %}
 		{% endif %}
-		<li class = '{{ class }}'><a href="{{ path_for('territory_details', {'id': t.id}) }}">{{ t.title }} </a> {{ t.total_people }} calls
+		<li class = '{{ class }}'>
+			<a href="{{ path_for('territory_details', {'id': t.id}) }}">
+				{{ t.title }} 
+			</a> 
+			<span class="calls">{{ t.total_people }} calls</span>
 		</li> 
 	{% else %}
 		<li><p>No territories were found. Add one!</p></li>
 	{% endfor %}
+	{# Add 12 empty <li> elements. http://codepen.io/dalgard/pen/Dbnus #}
+	{% for i in 0..12 %}
+		<li></li>
+	{% endfor %}
+
 	</ul>
 
 

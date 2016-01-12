@@ -1,14 +1,14 @@
 {% extends 'territories.twig' %}
 {% block title 'Add Territory' %}
 
+{% block actions '' %}
+	
 {% block content %}
-	<strong>Clark Congregation</strong>
-	<h2>Phone Territories</h2>
-
-	<strong>Add territory:</strong>
+	<h2>Add Territory</h2>
 	<form action="{{ path_for('territories') }}" method="POST">
 		{# <label for='title'>Territory: </label> #}
 		<input type='text' class='inline' autofocus name="title" placeholder="1A">
 		<input type='submit'name='form_add_territory' value="Add Territory">
 	</form>
+	{{ parent() }}
 {% endblock content %}

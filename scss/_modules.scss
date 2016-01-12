@@ -9,37 +9,52 @@ nav.actions {
 	list-style: none;
 	display: flex;
 	flex-flow : row wrap;
-	justify-content: flex-start;
+	justify-content: space-between;
 	padding: 0;
 	margin: 0;
 	
 	li {
 		//flex-grow: 1;
-		padding: 0;
+		padding: .25em;
 		border-radius: 5px;
 		border: 2px solid $dark-teal;
-		margin: .5em 1% .5em 0;
-		min-width: 100px;
+		margin: .5em 2px .5em;
+		min-width: 88px;
 		// width: 31%;
 		text-align: center;
 		&:hover, &:active, &:focus  {
 			background: $teal;
 			a { color: #eee; }
 		}
-
-		a {
-			padding: .5em;
-			display: block;
-			font-size: 2em;
-			white-space: nowrap;
+		&:empty {
+			height: 0;
+			border: none;
 		}
 	}
+
+	a {
+		display: block;
+		font-size: 2em;
+		white-space: nowrap;
+		.calls {
+			padding: .25em;
+		}
+	}
+	
 }
 
 
 .people {
+	width: 100%;
 	td {
 		border: 1px solid #eee;
+		table {
+			margin-bottom: 0;
+		}
+		table td {
+			// nested tables get no borders
+			border: none;
+		}
 	}
 	th, td {		
 		padding: 5px 8px;
@@ -47,8 +62,11 @@ nav.actions {
 	.unit, .postcode, .phone {
 		text-align: center;
 	}
-	.name, .address {
+	.name{
 		min-width: 130px;
+	}
+	.address {
+		min-width: 160px;
 	}
 	.unit {
 		width: 80px;
@@ -131,3 +149,5 @@ nav.actions {
 		text-decoration: none;
 	}
 }
+.small { font-size: .75em; }
+.quiet { color: rgba($charcoal, .5); }
