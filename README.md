@@ -1,5 +1,15 @@
+
+
 # FourOneOne
 A small website to store a collection of territories, add multi-unit dwellings ( apartments ) and do a reverse lookup at 411.ca using the address to parse out the microformat data, adding people to the buildling. ( AKA, it stores and organizes numbers from 411.ca )
+
+##Versions
+
+###Version 0.1 'Genesis'
+ - All major routes stable.
+ - Can delete people
+ - URLs modified for consistency
+
 
 ##Dependencies
 All dependencies are listed in composer. Run `composer update` in the project directory to download packages. and `require 'vendor/autoload.php'` in your code. See Composer documentation for more details.
