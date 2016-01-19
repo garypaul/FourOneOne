@@ -3,61 +3,69 @@
 $app->get('/buildings/{id:[0-9]+}', function($request, $response, $args){
 	//print_p($args);
 
-	$building = R::load('building', $args['id']);
-	$people = $building->ownPersonList;
-	usort($people, cmpByKey('unit') );
+	$building = getBuildingFullDetails( $args['id'] );
 
 	return $this->view->render($response, 'building.twig', [
 		'building' => $building,
-		'territory_title' => $building->territory->title,
-		'people' => $people,
+		'people' => $building['people'],
 		'messages' => $this->flash->getMessages(),
+		'selected_pid' => $request->getQueryParam('pid'),
 	]);
 })->setName('building');
 
 
+// Edit building form
 $app->get('/buildings/{id:[0-9]+}/edit', function($request, $response, $args){
-	$type = 'building';
-	$item = R::load($type, $args['id']);
-	$people = $item->ownPersonList;
 
-	return $this->view->render($response, "{$type}_edit.twig", [
-		$type => $item,
+	$building = getBuildingFullDetails( $args['id'] );
+
+	return $this->view->render($response, "building_edit.twig", [
+		'building' => $building,
 		'messages' => $this->flash->getMessages(),
+		'people' => $building['people'],
 	]);
 
 })->setName("building_edit");
 
 
-$app->put('/buildings/{id:[0-9]+}/edit', function($request, $response, $args){
+$app->put('/buildings/{id:[0-9]+}', function($request, $response, $args){
 	$formdata = $request->getParsedBody();
 	try {
-		if ( save_entity_with_array( 'building', $formdata, $args['id'] ) ){
-			$this->flash->addMessage('success', "Building address changed from " . $old . " to " . $formdata['address'] );
+		if ( empty($formdata['address']) ) {
+			throw new ValidationException("Building address can not be blank");
 		}
-		// if ( empty($formdata['address']) ){
-		// 	$this->flash->addMessage('fail','Building address can not be blank.');
-		// 	$response = $response->withRedirect( $request->getUri() );
-		// }
-		// else {
-		// 	$building = R::load('building', $args['id']);
-		// 	$old = $building->address;
-		// 	$building->address = $formdata['address']; 	// Update title
-		// 	$building->last_updated = R::isoDate(); 	// Update Date
-		// 	R::store($building); 						// Save
+		else {
+			$building = R::load('building', $args['id']);
+			$old = $building->address;
+			$building->address = $formdata['address']; 	// Update title
+			$building->last_updated = R::isoDate(); 	// Update Date
+			R::store($building); 						// Save
 
-		// 	$this->flash->addMessage('success', "Building address changed from " . $old . " to " . $formdata['address'] );
-		// 	$response = $response->withRedirect( $request->getUri() );
-		// }
+			if ( save_entity_with_array( 'building', $formdata, $args['id'] ) ){
+				$this->flash->addMessage('success', "Building address changed from " . $old . " to " . $formdata['address'] );
+			} else {
+				throw new ValidationException("Error updating building or no changes made.");
+			}
+			return $response->withRedirect( $request->getUri() );
+		}
+	}
+	catch(ValidationException $e){
+		$this->flash->addMessage('fail', $e->getMessage() );
+		$response = $response->withRedirect( $this->router->pathFor('building_edit', [ 'id' => $args['id'] ]) );
+		$response = $response->withHeader('X-Status-Reason', $e->getMessage());
+		return $response;
+
 	}
 	catch(Exception $e){
-		$response = $response->withStatus(400);
-		$response = $response->withHeader('X-Status-Reason', $e->getMessage());
-	}
 
+		$response = $response->withRedirect( $this->router->pathFor('building_edit', [ 'id' => $args['id'] ]) );
+		$response = $response->withHeader('X-Status-Reason', $e->getMessage());
+		return $response;
+	}
+	echo 'Uh oh! We should not be here';
 	return $response;
 
-})->setName('building_edit');
+});
 
 
 
@@ -78,6 +86,8 @@ $app->post('/buildings/{id:[0-9]+}/findpeople', function($request, $response, $a
 	return $response->withRedirect( $this->router->pathFor('error') );
 });
 
+// This should probably be changed to POST to /people with the building_id attached to each person.
+// 
 $app->post('/buildings/{id:[0-9]+}', function($request, $response, $args){
 	try {
 		

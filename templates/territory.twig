@@ -28,7 +28,8 @@
 {% endblock content %}
 
 {% block actions %}
-	<a class="button" href="{{ path_for( 'territories' ) }}">« All Territories</a>
-	<a class='button' href="{{ path_for('territory_edit', { id : territory.id }) }}">Edit Territory {{ territory.title }}</a>
-	<a class='button' href="{{ path_for('territory_buildings_add', { id : territory.id }) }}">Add Building</a>
+	<a class="button" href="{{ path_for( 'territories' ) }}">« All territories</a>
+	<a class='button' href="{{ path_for('territory_edit', { id : territory.id }) }}">Edit territory {{ territory.title }}</a>
+	<a class='button' href="{{ path_for('territory_buildings_add', { id : territory.id }) }}">Add building</a>
+	<a class="button" href="{{ path_for('territory_checkout', { id : territory.id }) }}">Check out territory</a>
 {% endblock actions%}

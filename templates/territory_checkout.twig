@@ -1,0 +1,17 @@
+{% extends 'territory_details.twig' %}
+
+{% block title %}Territory: {{ territory.title }} Edit{% endblock title%}
+{% block content %}
+	<h2>
+		Sign out territory 
+	</h2>
+
+	<form action='{{ path_for('territory_checkout', { id : territory.id } ) }}' method='post'>
+		<input type='hidden' type='text' name='territory_id' value='{{ territory.id }}' >
+		<input type='text' autofocus name="name" class="inline" value='' required placeholder="Amos Phiggs" >
+		<input type='email' name='email' class="inline" value='' required placeholder="amos@jmail.com">
+		<input type='text' name='checkout_at' placeholder='yyyy-mm-dd' class="inline" value='{{ "now"|date("Y-m-d") }}'>
+		<input type='submit' name="form_checkout_territory" value="Check Out" />
+	</form>
+	{{ parent() }}
+{% endblock content %}

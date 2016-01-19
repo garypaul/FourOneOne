@@ -82,8 +82,8 @@ function save_entity_with_array( $type = '', Array $formdata, $id = 0 ){
 function cmpByKey( $key, $sort = 'ASC' ){
 	return function($a, $b) use($key, $sort) {
 		return ($sort == 'ASC') 
-			? strcmp($a[$key], $b[$key]) 
-			: strcmp($a[$key], $b[$key]);  
+			? $a[$key] > $b[$key] 
+			: $a[$key] < $b[$key];  
 	};
 }
 function cmpByStreetName( $sort = 'ASC' ){
@@ -168,4 +168,51 @@ function getPeopleByAddress( $address ){
 		}
 	}
 	return $people;
+}
+
+function getBuildingFullDetails( $id, $isPersonPublished = true ){
+
+	$b = R::load('building', $id );
+	$building = $b->export();
+
+	$people = R::exportAll($b->ownPersonList);
+	usort($people, cmpByKey('unit') );
+	
+	$building['people'] = $people;
+	$building['territory_title'] = $b->territory['title'];
+
+	return $building;
+
+}
+
+function getTerritoryFullDetails( $id, $isPersonPublished = true ){
+		$t = R::load('territory', $id);
+		$territory = $t->export(); // simple territory copy
+				
+		$ownBuildings = $t->ownBuildingList; // building 'beans'
+		
+		foreach ($ownBuildings as $b) {
+			// simple building copy
+			$building = $b->export(); 
+
+			// make simple people copy
+			$people = R::exportAll($b->ownPersonList);
+			
+			// sort by unit
+			usort($people, cmpByKey('unit') );
+
+			// Add to simple building
+			$building['people'] = $people; 
+			
+			// add building to array
+			$buildings[] = $building; 
+		}
+
+		usort($buildings, function($a, $b){
+			return count($a['people']) < count($b['people']);
+		});
+
+		$territory['buildings'] = $buildings;
+		
+		return $territory;
 }

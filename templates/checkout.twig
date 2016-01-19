@@ -1,0 +1,15 @@
+{% extends 'territory_details.twig' %}
+{% block navigation '' %} {# Hides Nav #}
+
+{% block actions %}
+{% endblock actions%}
+
+{% block content %}
+
+	{# <h1>Territory {{ checkout.territory.title }}</h1> #}
+	{{ parent() }}
+	<p>Checked out to : <strong>{{ checkout.name }}</strong> 
+		<a href="mailto:{{ checkout.email }}">({{ checkout.email }})</a>
+		 at <strong>{{ checkout.last_updated }}</strong></p>
+{% endblock content %}
+

@@ -1,10 +1,11 @@
 nav.actions {
-	.button {
-		font-size: .8em;
-		padding: .8em 1em .6em;
-	}
 	margin-bottom: 1em;
 }
+nav.actions .button, article.checkout input {
+		font-size: .8em;
+		padding: .8em 1em .6em;
+}	
+
 .box-list {
 	list-style: none;
 	display: flex;
@@ -12,37 +13,81 @@ nav.actions {
 	justify-content: space-between;
 	padding: 0;
 	margin: 0;
-	
+
 	li {
+		text-align: center;
+		min-width: 88px;
+
+	}
+	li:empty {
+		height: 0;
+		border: none;
+	}
+	a:hover, a:active, a:focus  {
+		background: $teal;
+		color: #eee;
+	}
+	.calls {
+		padding: .25em;
+	}
+
+	.box-item {
 		//flex-grow: 1;
 		padding: .25em;
 		border-radius: 5px;
 		border: 2px solid $dark-teal;
-		margin: .5em 2px .5em;
-		min-width: 88px;
+		margin: .5em 2px .25em;
 		// width: 31%;
-		text-align: center;
-		&:hover, &:active, &:focus  {
-			background: $teal;
-			a { color: #eee; }
-		}
-		&:empty {
-			height: 0;
-			border: none;
-		}
-	}
-
-	a {
 		display: block;
 		font-size: 2em;
 		white-space: nowrap;
-		.calls {
-			padding: .25em;
-		}
-	}
-	
-}
 
+	}
+	.checkedout .box-item{
+		color: $charcoal;
+		border-color: $charcoal;
+	}
+}
+.checkouts-list {
+	strong {
+		white-space: nowrap;
+	}
+	list-style : none;
+	padding: 0;
+	margin: 0 0 1em;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between; 
+	@include media('>=tablet'){
+		justify-content: flex-start; 
+	}
+
+	.hd {
+		margin-top: 0;
+	}
+	li {
+		padding: 1em;
+		width: 98%;
+		border: 2px solid $wheat;
+		border-radius: 5px;
+		margin: 1%;
+		@include media('>phone', '<tablet'){
+			width: 48%;
+		}
+		@include media('>=tablet'){
+			width: 31%;
+			margin: 1%;		
+		}
+		@include media('>desktop'){
+			width: 320px;
+			margin: 5px;
+		}
+
+	}
+	li:nth-child(odd) {
+		// background: $wheat;
+	}
+}
 
 .people {
 	width: 100%;
@@ -83,6 +128,9 @@ nav.actions {
 		width: 200px;
 		text-align: center;
 	}
+	.selected { 
+		background: linear-gradient( white 0%, $wheat 50% , white 100% );
+	}
 	input[type='text']{
 		opacity: 1;
 		transition: all .8s ease;
@@ -97,8 +145,12 @@ nav.actions {
 	text-decoration: line-through;
 }
 
+.small { font-size: .75em; }
+.quiet { color: rgba($charcoal, .5); }
 
-
+// **********
+// Slim Flash Styles
+// ********** 
 #feedback {
 	padding: 0px 50px 0;
 	color: #fff;
@@ -117,12 +169,18 @@ nav.actions {
 		-moz-animation:    feedback-in .3s ease-in-out forwards, feedback-out .3s ease-in-out 5s forwards;
 		animation:         feedback-in .3s ease-in-out forwards, feedback-out .3s ease-in-out 5s forwards;
 	}
-	&.fail {
+	&.fail, &.notice {
 		transform: translateY(-100px);
-		background: $red;
 		-webkit-animation: feedback-in .3s ease-in-out forwards;
 		-moz-animation:    feedback-in .3s ease-in-out forwards;
 		animation:         feedback-in .3s ease-in-out forwards;
+	}
+	&.fail {
+		background: $red;
+	}
+	&.notice {
+		background: $wheat;
+		color: darken(desaturate($wheat, 20% ), 80%);		
 	}
 	&.dismissed {
 		transform: translateY(0);
@@ -149,5 +207,6 @@ nav.actions {
 		text-decoration: none;
 	}
 }
-.small { font-size: .75em; }
-.quiet { color: rgba($charcoal, .5); }
+// ************
+//  END Slim Flash Styles
+// ************

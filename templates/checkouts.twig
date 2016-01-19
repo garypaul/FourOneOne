@@ -1,0 +1,41 @@
+{% extends 'main.twig' %}
+{% set active_page = "checkouts" %}
+
+{% block actions %}
+{% endblock actions%}
+
+{% block content %}
+
+	<h1>All Territories Checked Out</h1>
+	<ul class="checkouts-list">
+		
+	{% for checkout in checkouts if ( checkout.territory.checked_out and not checkout.checkin_at )%}	
+	<li><article class='checkout'>
+		{% set checkout_path = path_for('checkout', { 'id' : checkout.id, 'auth' : checkout.token  }) %}
+		<h2 class='hd'><a href="{{ checkout_path }}">Territory {{ checkout.territory.title }}</a></h2>
+		<p>Checked out to<br> <a href="mailto:{{ checkout.email }}"><strong>{{ checkout.name|title }}</strong></a> on <strong>{{ checkout.checkout_at }}</strong> 
+		</p>
+		<form class='inline' action='{{ checkout_path }}' method='POST'>
+			<input type='text' class="inline" name='checkin_at' placeholder='yyyy-mm-dd' value='{{ "now"|date('Y-m-d') }}'>
+			<input type='hidden' name='_METHOD' value='PUT'>
+			<input type='submit' class="inline" name='form_check_in' class="button" value='Check In'>
+		</form>
+		</article>
+	</li>
+	{% else %}
+	<p>Nothing Checked out</p>
+	{% endfor %}
+	</ul>
+	<h2>Previously checked out</h2>
+	<ul>
+	{% for checkout in checkouts if not checkout.territory.checked_out %}	
+	<li>
+		<h3>Territory {{ checkout.territory.title }}</h3>	
+		<p>Checked in at <strong>{{ checkout.checkin_at }}</strong> by <a href="mailto:{{ checkout.email }}"><strong>{{ checkout.name|title }}</strong></a></p>
+	</li>
+	{% endfor %}
+		
+	</ul>
+
+{% endblock content %}
+

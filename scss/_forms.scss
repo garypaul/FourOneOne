@@ -28,6 +28,7 @@ textarea.fail:focus {
 }
 input.inline {
 	width: inherit;
+	max-width: 100%;
 	display: inline-block;
 }
 input.fail,

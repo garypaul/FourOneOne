@@ -12,15 +12,13 @@
 
 {% block content %}
 
-	<h1>
-		Territory: <strong>{{ territory.title }}</strong>
-	</h1>
+	<h1>Territory: <strong>{{ territory.title }}</strong></h1>
+	{% set buildings = territory.buildings ? territory.buildings : territory.ownBuilding %}
 	{% for b in buildings %}
 		<article class="building">
 		<h2>Address: <a href="{{ path_for('building', {id : b.id } ) }}">{{ b.address }}</a></h2>
-			{% set people = b.ownPerson %}
-			{% set printview = true %}
-			{% set legend = true %}
+			{% set people = b.people %}
+			{% set printview, legend, hideaddress = true, true, true %}
 			{% include 'partials/people_table.twig' %}
 		</article>
 	{% else %}

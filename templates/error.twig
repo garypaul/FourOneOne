@@ -2,5 +2,9 @@
 
 {% block content %}
 	<h1>Uh-Oh! Something wrong happened</h1>
-	<p>{{ error_details }}</p>
+	<div class='error_detail'>
+	{% for m in messages.error_detail %}
+		<p>{{ m }}</p>
+	{% endfor %}
+	</div>
 {% endblock %}

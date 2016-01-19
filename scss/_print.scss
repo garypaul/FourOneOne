@@ -9,7 +9,7 @@ body {
 	padding-top: 0;
 }
 @page {
-	margin: 1cm 0.25cm;
+	margin: 1.25cm 0.25cm;
 }
 input[type='submit'], form { display: none; }
 table { border-collapse: collapse; }
@@ -46,9 +46,9 @@ h1,h3,h4,h5,h6, th {
 	color: $dark-teal;
 }
 
-table.people,
+// table.people,
 article.building {
- 	page-break-inside: avoid;  
+ 	// page-break-inside: avoid;  
 }
 
 .people {

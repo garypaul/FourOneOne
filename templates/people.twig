@@ -6,7 +6,12 @@
 
 {% block content %}
 	<strong><a href="{{ path_for( 'territories' ) }}">« Back to Territories</a></strong>
-	<h3>People</h3>
-	{% set showaddress  = true %}
+	<h3>{{	 people|length }} people</h3>
+	{% set can_delete = true %}
+	{% set is_published = false %}
+	<h2>Unpublished</h2>
+	{% include 'partials/people_table.twig' %}
+	{% set is_published = true %}
+	<h2>Published</h2>
 	{% include 'partials/people_table.twig' %}
 {% endblock content %}

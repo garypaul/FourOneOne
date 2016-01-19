@@ -44,7 +44,7 @@ main {
 	padding: 0 0 20px 0;
 	overflow: auto;
 	h2 {
-		margin: 10px 0 20px;
+		margin: .25em 0 .75em;
 		font-size: 24px;
 	}
 	strong {
@@ -96,4 +96,9 @@ caption {
 		float: right;
 		font-weight: normal;
 	}
+}
+h1,h2,h3,h4,h5,h6 {
+	color: $charcoal;
+	margin-top: .5em;
+	margin-bottom: .5em;
 }

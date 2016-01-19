@@ -8,14 +8,15 @@
 
 	<ul class="box-list">
 	{% for t in territories %}
-		
-		{% if t.id == added_id %}
-			{% set class = 'added' %}
-		{% endif %}
-		<li class = '{{ class }}'>
-			<a href="{{ path_for('territory_details', {'id': t.id}) }}">
-				{{ t.title }} 
-			</a> 
+
+		<li class = '{{ t.checked_out ? "checkedout" : "" }}'>
+			{% if t.checked_out %}
+				<span class='box-item'>{{ t.title }}</span>
+			{% else %}
+				<a class='box-item' href="{{ path_for('territory_details', {'id': t.id}) }}">
+					{{ t.title }} 
+				</a> 
+			{% endif %}
 			<span class="calls">{{ t.total_people }} calls</span>
 		</li> 
 	{% else %}

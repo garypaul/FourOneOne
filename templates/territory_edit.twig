@@ -2,11 +2,9 @@
 
 {% block title %}Territory: {{ territory.title }} Edit{% endblock title%}
 
-{% block content_before %}
-	<strong>
-		<a href="{{ path_for( 'territory', {'id': territory.id} ) }}">« Back to Territory {{ territory.title }}</a>
-	</strong>
-{% endblock content_before %}
+{% block actions %}
+	<a class="button" href="{{ path_for( 'territory', {'id': territory.id} ) }}">« View Territory {{ territory.title }}</a>
+{% endblock actions %}
 
 {% block content %}
 

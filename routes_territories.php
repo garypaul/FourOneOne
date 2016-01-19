@@ -1,5 +1,21 @@
 <?php
 
+/**
+ * Sends a link to the person to access territory
+ * @param  $territory_title Territory title
+ * @param  $to   To Email
+ * @param  $name Person's name
+ * @param  $url  Valid Url to send to person
+ * @return Boolean       true if successful
+ */
+function mail_territory( $territory_title, $to, $name, $url ){
+	$subject = 'Phone Territory ' . $territory_title . ' for ' . $name;
+	$message = 'Click or copy link into a browser: ' . $url;
+	$headers = 'From: info@ourterritories.org' . "\r\n" .
+	    'X-Mailer: PHP/' . phpversion();
+
+	return mail($to, $subject, $message, $headers);
+}
 
 $app->group('/territories', function(){
 	
@@ -66,21 +82,97 @@ $app->group('/territories', function(){
 
 // // territory grouping
 $app->group('/territories/{id:[0-9]+}', function(){
+			
+	$this->get('/checkout', function( $request, $response, $args){
+		try {
+			$territory = getTerritoryFullDetails( $args['id'] );
+			
+		} 
+		catch(ResourceNotFoundException $e){
+			$response = $response->withStatus(404);
+		} 
+		catch (Exception $e) {
+			$this->flash->addMessage('fail', $e->getMessages() );
+			return $response->withRedirect( $this->router->pathFor('error') );
+		}
+		return $this->view->render($response, 'territory_checkout.twig', [
+			'messages' => $this->flash->getMessages(),
+			'territory' => $territory,
+			// 'buildings' => $territory['buildings'],
+		]);	
+	})->setName('territory_checkout');
+
+	$this->post('/checkout', function( $request, $response, $args){
+	$checkout_url = '';	
+		try {
+			$territory = R::load('territory', $args['id']);
+
+			$formdata = $request->getParsedBody();
+			
+			$date = date_create_from_format('Y-m-d', $formdata['checkout_at']);
+			if(!$date){
+				$date = R::isoDate();
+				$this->flash->addMessage('fail', $formdata['checkout_at'] . ' not a valid date, so I used today.');
+			}
+
+
+			$checkout = R::dispense('checkout');
+			$checkout->checkout_at = $date;
+			$checkout->name = filter_var( $formdata['name'], FILTER_SANITIZE_STRING );
+			$checkout->email = filter_var( $formdata['email'], FILTER_SANITIZE_EMAIL );
+			$checkout->token = rtrim(strtr(base64_encode( $formdata['name'] ), '+/', '-_'), '='); //bin2hex( random_bytes(5) );
+
+			$territory->xownCheckoutList[] = $checkout;
+			$territory->checked_out = true;
+
+			$this->flash->addMessage('success', 'Territory '.$territory->title.' checked out to '.$checkout->name );
+
+			$id = R::store($territory);
+			$checkout_url = $this->router->pathFor('checkout', [ 'id' => $checkout->id , 'auth' => $checkout->token ] );
+
+			if ( mail_territory( $territory->title, $checkout->email, $checkout->name, 'http://clark.ourterritories.org'.$checkout_url ) ){
+				$this->flash->addMessage('success', 'Message sent to '.$checkout->email );
+			}
+			else {
+				$this->flash->addMessage('fail', 'Could not send message sent to '.$checkout->email );				
+			}
+
+		}
+		catch (ValidationException $e ){
+			$this->flash->addMessage('fail', $e->getMessage() );
+			return $response->withRedirect( $request->getUri() );
+		}
+		catch (Exception $e) {
+			$this->flash->addMessage('fail', $e->getMessage() );
+			return $response->withRedirect( $this->router->pathFor('error') );				
+		}
+		// R::begin();
+		// try {
+		// 	R::store( $checkout );
+			
+		// 	R::commit();		
+		// } catch (Exception $e) {
+		// 	R::rollback();
+		// }
+		return $response->withRedirect( $checkout_url );
+			
+	});
 
 
 	// View one (1) territory 
 	// GET /territory/123 
 	$this->get('', function($request, $response, $args){
-		
-		$buildings = array();
 
 		try {
 			$territory = R::load('territory', $args['id']);
+			
 			foreach ($territory->ownBuildingList as $b) {
 				$building = $b->export();
-				$building['total_people'] = count( $b->ownPersonList );
+				$building['total_people'] =  count($b->ownPersonList);
 				$buildings[] = $building;
 			}
+
+			usort( $buildings, cmpByKey('total_people', 'DESC') );
 		}
 		catch(ResourceNotFoundException $e){
 			$response = $response->withStatus(404);
@@ -190,20 +282,11 @@ $app->group('/territories/{id:[0-9]+}', function(){
 	// View complete details of territory,
 	// GET territories/123/details
 	$this->get('/details', function($request, $response, $args){
-		$territory = R::load('territory', $args['id']);
-		$buildings = $territory->ownBuildingList;
-		foreach ($buildings as $b) {
-			$people[] = $b->ownPersonList;
-			// echo count($b->ownPersonList); 
-		}
-		
-		usort($buildings, function($a, $b){
-			return count($a->ownPersonList) < count($b->ownPersonList);
-		});
 
+		$territory = getTerritoryFullDetails( $args['id'] );
 		// print_p( $territory );
 		return $this->view->render($response, 'territory_details.twig', [
-			'buildings' => $buildings,
+			// 'buildings' => $territory['buildings'],
 			'territory' => $territory,
 			'messages' => $this->flash->getMessages(),
 		]);

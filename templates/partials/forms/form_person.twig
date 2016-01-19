@@ -4,18 +4,22 @@
 		{# IF we passed a person, this is a PUT form, as we want to edit. Otherwise it's a POST as we want to add #}
 		{% set submit_label = 'update' %}
 		{% set form_action = path_for('person', {id : person.id} ) %}
-		<input type="hidden" name="_METHOD" value="PUT"/>
 	{% endif %}
 
 
 <form action='{{ form_action }}' class="form_person" method='POST'>
+	{% if person.id > 0 %}
+		<input type="hidden" name="_METHOD" value="PUT"/>
+	{% endif %}
 	
 	<table>
 		{% if not hide_thead %}
 		<thead>
 			<tr>
 				<th class='name'>Name</th>
-				{# <th class='address'>Address</th> #}
+				{% if not hideaddress %}
+				<th class='address'>Address</th>
+				{% endif %}
 				<th class='unit'>Unit</th>
 				<th class='postcode'>Post Code</th>
 				<th class='phone'>Phone</th>
@@ -27,11 +31,16 @@
 			<tr>
 				<td class="name">
 					<input type='hidden' name="person[id]" value='{{ person.id ?: 0}}'>
-					<input type='hidden' name="person[building_id]" value='{{ building_id ?: 0}}'>
+					<input type='hidden' name="person[building_id]" value='{{ building.id|default(person.building_id)}}'>
 					<input type='text' placeholder='John Smith' name='person[name]' value="{{ person.name|e }}">
 				</td>
-				{# <td class="address">
-					<input type='text' placeholder='123 Sesame St.' name='person[address]' value="{{ person.address }}" ></td> #}
+				
+				{% if not hideaddress %}
+				<td class="address">
+					<input type='text' placeholder='123 Sesame St.' name='person[address]' value="{{ person.address }}" >
+				</td>
+				{% endif %}
+
 				<td class="unit">
 					<input type='text' placeholder='101' name='person[unit]' value='{{person.unit }}'>
 				</td>

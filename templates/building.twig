@@ -4,15 +4,13 @@
 {% block title %}Building: {{ building.address }}{% endblock title%}
 
 {% block actions %}
+	<a class='button' href="{{ path_for( 'territory', {'id': building.territory_id} ) }}">« Territory {{ building.territory_title }}</a>
 	<a class="button" href="{{ path_for('building_edit', { id : building.id }) }}">Edit Building</a>
 {% endblock actions%}
 
 {% block content %}
 	{% if building %}
 
-		<strong>
-			<a href="{{ path_for( 'territory', {'id': building.territory_id} ) }}">« Back to Territory {{ territory_title }}</a>
-		</strong>
 		<h2>{{ building.address }}</h2>
 		<h3>People</h3>	
 		{% if new_people %}

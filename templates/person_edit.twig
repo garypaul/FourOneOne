@@ -3,7 +3,7 @@
 {% block actions %}
 	<form action='{{ path_for('person', { id : person.id } )}}' method='POST'>
 		<input type='hidden' name="_METHOD" value="DELETE">
-		<input type='submit' class="button" value="Delete">
+		<input type='submit' class="button" value="Delete" onclick="return confirm('Confirm Delete of {{ person.name }}?');">
 	</form>
 {% endblock actions %}
 {% block content %}
