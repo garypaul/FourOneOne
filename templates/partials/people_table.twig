@@ -32,11 +32,11 @@
 	<tbody>
 
 {# By default, we only show published people #}
-	{% for p in people if p.published == is_published|default(true) %}
+	{% for p in people  %}
 		<tr class='person-{{p.id}} {% if selected_pid == p.id %}selected{% endif %}' >
 			
 			<td class="name">
-				{% if printview|default(true) %}
+				{% if printview|default(false) %}
 					{{ p.name }}
 				{% else %}
 					<a href="{{ path_for('person_edit', {id : p.id } ) }}">{{ p.name }}</a>

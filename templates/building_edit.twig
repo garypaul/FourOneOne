@@ -9,6 +9,7 @@
 	<form action='{{ path_for('building', { id: building.id } )}}' method='POST'>
 		<h2>{{ building.address }}</h2>
 		<label for='address'><strong>Address</strong></label><br>
+		<input type='hidden' name='territory_id' value="{{ building.territory_id }}">
 		<input class="inline" placeholder='2414 Mattaios Way' autofocus type='text' name='address' value='{{ building.address }}' > <input type='submit' value='Update Building' name='form_edit_building'>
 		<input type="hidden" name="_METHOD" value="PUT"/>
 	</form>

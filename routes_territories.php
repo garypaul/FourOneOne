@@ -1,21 +1,6 @@
 <?php
 
-/**
- * Sends a link to the person to access territory
- * @param  $territory_title Territory title
- * @param  $to   To Email
- * @param  $name Person's name
- * @param  $url  Valid Url to send to person
- * @return Boolean       true if successful
- */
-function mail_territory( $territory_title, $to, $name, $url ){
-	$subject = 'Phone Territory ' . $territory_title . ' for ' . $name;
-	$message = 'Click or copy link into a browser: ' . $url;
-	$headers = 'From: info@ourterritories.org' . "\r\n" .
-	    'X-Mailer: PHP/' . phpversion();
 
-	return mail($to, $subject, $message, $headers);
-}
 
 $app->group('/territories', function(){
 	
@@ -282,7 +267,7 @@ $app->group('/territories/{id:[0-9]+}', function(){
 	// View complete details of territory,
 	// GET territories/123/details
 	$this->get('/details', function($request, $response, $args){
-
+		
 		$territory = getTerritoryFullDetails( $args['id'] );
 		// print_p( $territory );
 		return $this->view->render($response, 'territory_details.twig', [

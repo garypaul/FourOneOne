@@ -57,6 +57,7 @@
 		{% endif %}
 		
 		{% if people %}
+			{% set printview = false %}
 			{% include 'partials/people_table.twig' %}
 		{% endif %}
 	{% else %}
