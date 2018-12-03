@@ -17,7 +17,7 @@ $app->group('/people/{id:[0-9]+}', function(){
 			
 			//$formdata = ;
 			$request_body = $request->getParsedBody();
-			print_p($request_body); die();
+			// print_p($request_body); die();
 			// form data is held inside a person array
 			if( $request->isXhr() ){
 				//$edited_person = $request->getQueryParams();

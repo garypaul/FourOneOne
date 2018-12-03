@@ -123,10 +123,11 @@ function cmpPeopleByAddress($a, $b){
 function getPeopleByAddress( $address ){
 	$PAGE_SIZE = 25;
 	$MAX_PAGES = 5;
-	$url = 'https://411.ca/search?q='. urlencode( strtolower( $address ) . ', vancouver, bc') .'&st=reverse';
+	$url = 'https://411.ca/reverse/search?q='. urlencode( strtolower( $address ) . ', Vancouver, BC') ;
 
 	// Get first page of data and extract the items
 	$md = new MicrodataPhp($url);
+
 	$items = $md->obj()->items;
 
 	if( count($items) >= $PAGE_SIZE ) {
